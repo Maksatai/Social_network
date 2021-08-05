@@ -8,8 +8,16 @@
 </head>
 <body>
     <h1><b>VFriends</b></h1>
-    <a href="{% url 'login' %}" class="btn btn-info">Войти</a>
-    <br>
-    <a href="{% url 'signup' %}" class="btn btn-primary">Регистрация</a>
+    {% if user.is_authenticated %}
+        <p>Hi {{ user.username }}!</p>
+        <p><a href="{% url 'logout' %}">Log out</a></p>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-info">Войти</a>
+        <br>
+        <a href="{% url 'signup' %}" class="btn btn-primary">Регистрация</a>
+    {% endif %}
+
+    {% block content %}
+    {% endblock content %}
 </body>
 </html>
