@@ -9,6 +9,8 @@ class SignupView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         if request.method == 'POST':
             username = request.POST.get('username')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
             email = request.POST.get('email')
             password = request.POST.get('password')
             password2 = request.POST.get('password2')
