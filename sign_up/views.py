@@ -16,7 +16,7 @@ class SignupView(TemplateView):
             password2 = request.POST.get('password2')
 
             if password == password2:
-                User.objects.create_user(username, email, password)
+                User.objects.create_user(username, first_name, last_name, email, password)
                 return redirect(reverse("login"))
 
         return render(request, self.template_name)

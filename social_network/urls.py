@@ -23,6 +23,7 @@ urlpatterns = [
     path('accounts/',include('log_in.urls')),
     path('accounts/',include('sign_up.urls')),
     path('accounts/',include('v_profile.urls')),
+    # path('accouns/',include('v_profile.urls.edit_profile')),
     path('',include('core.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
 ]
