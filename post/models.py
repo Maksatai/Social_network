@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.urls import reverse
 
 # Create your models here.
 
@@ -15,6 +16,14 @@ class Post(models.Model):
     def __str__(self):
         return self.text
 
+    # def get_absolute_url(self):
+	# 	return reverse('post-detail', kwargs={'pk': self.pk})
+  
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
+
+
+class Like(models.Model):
+	user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+	post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
