@@ -23,10 +23,10 @@
 </head>
 
 <body>
-  {% if user.is_authenticated %}
+  <!-- {% if user.is_authenticated %} -->
   <nav class="nav nav-pills flex-column flex-sm-row">
-    <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'profile' %}"><b>{{ user.username }}</b></a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'home' %}">
+    <a class="flex-sm-fill text-sm-center nav-link" href=""><b>zhanyl</b></a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="">
       <h1><b>VFriends</b></h1>
     </a>
     <a class="flex-sm-fill text-sm-center nav-link">
@@ -36,26 +36,26 @@
         <button type="button" class="btn btn-outline-primary">search</button>
       </div>
     </a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'logout' %}"><b>Log out</b></a>
+    <a class="flex-sm-fill text-sm-center nav-link" href=""><b>Log out</b></a>
 
   </nav>
   <hr><br>
 
   <nav class="nav flex-column">
-    <a class="nav-link active" aria-current="page" href="{% url 'home' %}"><i class="fa fa-home" aria-hidden="true"></i>
+    <a class="nav-link active" aria-current="page" href=""><i class="fa fa-home" aria-hidden="true"></i>
       Home</a>
-    <a class="nav-link" href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
+    <a class="nav-link" href=""><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
     <a class="nav-link" href="#"><i class="fa fa-comment" aria-hidden="true"></i> Messages</a>
     <a class="nav-link" href="#"><i class="fa fa-users" aria-hidden="true"></i> Friends</a>
     <a class="nav-link" href="#"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
   </nav>
 
-  {% else %}
+  <!-- {% else %}
   <h3>Добро пожаловать в <b style="color:blue; font-size:40px;">VFriends</b></h3>
   <a href="{% url 'login' %}" class="btn btn-info">Войти</a>
   <br>
   <a href="{% url 'signup' %}" class="btn btn-primary">Регистрация</a>
-  {% endif %}
+  {% endif %} -->
 
   {% block content %}
   {% endblock content %}
