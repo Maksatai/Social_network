@@ -15,5 +15,5 @@ class LoginView(TemplateView):
                 login(request, user)
                 return redirect("/")
             else:
-                context['error'] = "Логин или пароль неправильные"
+                context['error'] = "Неправильный логин или пароль"
         return render(request, self.template_name, context)

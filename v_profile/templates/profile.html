@@ -1,9 +1,8 @@
 {% extends 'home.html' %}
 {% load static %}
 {% block content %}
+<!-- <link rel="stylesheet" href="{% static 'css/styles.css' %}"> -->
     <div class="container content">
-        <h2>{{ selected_user.get_full_name }}</h2>
-
         <div class="row" style="margin-left: 20px;">
             <div class="col5">
                 {% if selected_user.profile.avatar.name %}
@@ -19,11 +18,11 @@
             </div>
             <div class="col">
                 <dl class="row">
-                    <dt class="col-sm-3 text-right">Полное имя</dt>
-                    <dd class="col-sm-9">{{ selected_user.get_full_name }}</dd>
+                    <dt class="col-sm-3 text-right">Имя пользователя</dt>
+                    <dd class="col-sm-9">{{ user.username }}</dd>
 
                     <dt class="col-sm-3 text-right">Email</dt>
-                    <dd class="col-sm-9">{{ selected_user.email }}</dd>
+                    <dd class="col-sm-9">{{ user.email }}</dd>
 
                     <dt class="col-sm-3 text-right">Город</dt>
                     <dd class="col-sm-9">{{ selected_user.profile.city }}</dd>

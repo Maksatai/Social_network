@@ -2,6 +2,10 @@
 {% block content %}
   <form method="POST">
     {% csrf_token %}
+
+    {% if error %}
+        <p style="color:red">{{ error }}</p>
+    {% endif %}
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-user ti-user"></i></span>
