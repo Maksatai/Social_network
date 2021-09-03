@@ -20,4 +20,6 @@ class UserRegistrationForm(forms.ModelForm):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Пароли не совпадают')
+        elif len(cd['password'])<6:
+            raise forms.ValidationError('Слишком короткий пароль')
         return cd['password2']

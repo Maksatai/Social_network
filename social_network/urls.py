@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from core.views import SuccessView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +25,8 @@ urlpatterns = [
     path('accounts/',include('sign_up.urls')),
     path('accounts/',include('v_profile.urls')),
 #    path('accouns/',include('v_profile.urls.edit_profile')),
+    # path('reset/',password_reset,name="password_reset"),
+    path('success/',SuccessView.as_view(),name='success'),
     path('',include('core.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
 ]
