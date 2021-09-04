@@ -1,16 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <h1 style="text-align: center; margin-top: 60px; margin-bottom: 30px;">Добро пожаловать в <b style="font-family: 'Lucida Handwriting',cursive; color: blue; font-size: 50px;">VFriends</b></h3>
-    <h4 style="text-align: center;">Отправили ссылку для активации аккаунта на ваш email</h2>
-    <h2 style="text-align: center;color:blue;font-size: 40px;"><a style="text-decoration: none;" href="{% url 'home' %}">Назад</a></h2>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h4 style="text-align: center;">Отправили ссылку для активации аккаунта на ваш email</h2>
+{% endblock content %}

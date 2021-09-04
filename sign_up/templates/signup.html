@@ -24,10 +24,8 @@
                 </div>
               {% endfor %}
           <button class="btn btn-primary btn-block" type="submit">Регистрация</button>
+          <div class="login-links">
+            <p class="text-center">Есть аккаунт? <a class="txt-brand" href="{% url 'login' %}"><font color=#29aafe>Войти</font></a></p>
+          </div>
         </form>
-      </div>
-
-      <div class="login-links">
-        <p class="text-center">Есть аккаунт? <a class="txt-brand" href="{% url 'login' %}"><font color=#29aafe>Войти</font></a></p>
-      </div>
     {% endblock content %}
