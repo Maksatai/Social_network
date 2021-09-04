@@ -25,7 +25,7 @@ class SignupView(TemplateView):
             #Save the User object
                 new_user.is_active=False
                 new_user.save()
-
+                user_new = new_user
                 uidb64 = urlsafe_base64_encode(force_bytes(new_user.pk))
 
                 domain = get_current_site(request).domain
@@ -44,8 +44,7 @@ class SignupView(TemplateView):
 class VerificationView(TemplateView):
     def get(self, request, uidb64, token):
 
-        # def end(request):
-        #     User.user.is_active=True
-        #     User.user.save()
+        # request.user.is_active=True
+        # request.user.save()
         return redirect('home')
         
