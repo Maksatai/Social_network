@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from .forms import UserRegistrationForm
 from django.core.mail import EmailMessage
 from .service import send
+# from django.contrib import messages
 
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -35,7 +36,6 @@ class SignupView(TemplateView):
                 subject="Регистрация"
                 body="Уважаемый " + new_user.username + " Для активации аккаунта перейдите по ссылке\n"+ activate_url
                 send(subject,body,new_user.email)
-
                 return redirect("success")
         else:
             user_form = UserRegistrationForm()

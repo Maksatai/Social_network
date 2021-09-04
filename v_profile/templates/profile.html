@@ -3,9 +3,20 @@
 {% block content %}
 
     <div class="container content">
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% elif message.tags == 'error' %}
+             <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+            {% endif %}
+        {% endfor %}
         <div class="row" style="margin-left: 20px;">
             <div class="col5">
-                {% if selected_user.profile.avatar.name %}
+                {% if selected_user.profile.avatar %}
                     <img src="{{ selected_user.profile.avatar.url }}" class="avatar-img img-thumbnail">
                 {% else %}
                     <img src="{% static 'media/1.png' %}" class="avatar-img img-thumbnail">
@@ -19,10 +30,10 @@
             <div class="col">
                 <dl class="row">
                     <dt class="col-sm-3 text-right">Имя пользователя</dt>
-                    <dd class="col-sm-9">{{ user.username }}</dd>
+                    <dd class="col-sm-9">{{ selected_user.username }}</dd>
 
                     <dt class="col-sm-3 text-right">Email</dt>
-                    <dd class="col-sm-9">{{ user.email }}</dd>
+                    <dd class="col-sm-9">{{ selected_user.email }}</dd>
 
                     <dt class="col-sm-3 text-right">Город</dt>
                     <dd class="col-sm-9">{{ selected_user.profile.city }}</dd>
