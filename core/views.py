@@ -11,7 +11,7 @@ class HomeView(TemplateView):
 
 class PostListView(ListView):
 	model = Post
-	template_name = 'base.html'
+	template_name = 'post.html'
 	context_object_name = 'posts'
 	ordering = ['-created_at']
 	paginate_by = 12

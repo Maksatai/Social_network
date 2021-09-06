@@ -8,8 +8,8 @@ from django.urls import reverse
 class Post(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     text = models.TextField(null=True, blank=True)
-    photo = models.ImageField(upload_to='will/create/later', null=True, blank=True)
-    video = models.FileField(upload_to='will/create/later', null=True, blank=True)
+    photo = models.ImageField(upload_to='media/', null=True, blank=True)
+    video = models.FileField(upload_to='media/', null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     tags = models.CharField(max_length=100, blank=True)
 
