@@ -39,3 +39,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
 	def get_queryset(self):
 		user = get_object_or_404(User, username=self.kwargs.get('username'))
 		return Post.objects.filter(user_name=user).order_by('-date_posted')
+    template_name = 'home.html'
+
+class SuccessView(TemplateView):
+    template_name = "success.html"

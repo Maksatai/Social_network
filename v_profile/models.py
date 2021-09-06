@@ -24,3 +24,4 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True, blank=True, verbose_name=u"Дата рождения")
     gender = models.CharField(max_length=10, verbose_name=u"Пол", choices=GENDER_CHOICES, default="male")
     relationship = models.CharField(max_length=20, verbose_name=u"Статус отношений", choices=REL_CHOICES, default="none")
+
