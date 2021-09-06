@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'log_in',
     'sign_up',
     'friends',
+    'post',
     'v_profile',
 ]
 
