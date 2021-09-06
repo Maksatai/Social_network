@@ -5,14 +5,20 @@
             {% for post in posts %}
             <div class="card card-signin my-5">
                 <div class="card-body">
-                    <a href="{{ post.user }}"><img src="{{ profile.avatar }}"
-                            class="rounded-circle" width="30" height="30" alt="" /></a>
+                    {% if user.profile.avatar %}
+                    <a href="{{ post.user }}"><img src="{{ post.user.profile.avatar.url }}" class="rounded-circle"
+                        width="30" height="30" alt="" /></a>
+                    {% else %}
+                    <a href="{{ post.user }}"></a><img src="{% static 'media/Profile.png' %}" class="rounded-circle"
+                    width="30" height="30" alt=""/></a>
+                    {% endif %}
+                
                     <a class="text-dark" href="{{ post.user }}"><b>{{ post.user }}</b></a>
                     <br /><small class="text-muted">Posted on {{ post.created_at }}</small>
                     <br /><br />
                     <p class="card-text text-dark">{{ post.text }}</p>
                 </div>
-                <a href="{{ post.photo }}"><img class="card-img-top" src="{{ post.photo }}" alt="" /></a>
+                <a href="{{ post.image.url }}"><img class="card-img-top" src="{{ post.photo }}" alt="" /></a>
                 {% if post.tags %}
                 <br />
                 <p class="text-danger ml-3">
@@ -24,10 +30,10 @@
                         {% if post in liked_post %}
                         <a href="" style="color: red" id="likebtn{{ post.id }}">
                             Unlike</a>
-                         {{post.likes.count}} {% else %}
+                        {{post.likes.count}} {% else %}
                         <a href="" style="color: green" id="likebtn{{ post.id }}">
                             Like</a>
-                         {{post.likes.count}} {% endif %}
+                        {{post.likes.count}} {% endif %}
                     </button>
                     <a class="btn btn-outline-info" href="">Comments </a>
                 </div>
