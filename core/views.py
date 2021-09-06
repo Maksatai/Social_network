@@ -4,7 +4,7 @@ from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 class HomeView(TemplateView):
-    template_name = 'base.html'
+    template_name = 'home.html'
 
 # def homepage(request):
 #     return render(request, 'base.html')

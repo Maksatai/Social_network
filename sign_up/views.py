@@ -46,5 +46,5 @@ class VerificationView(TemplateView):
 
         # request.user.is_active=True
         # request.user.save()
-        return redirect('home')
+        return redirect('homepage')
         
