@@ -6,7 +6,7 @@ from django.urls import reverse
 # Create your models here.
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.OneToOneField(User, on_delete=models.CASCADE)
     text = models.TextField(null=True, blank=True)
     photo = models.ImageField(upload_to='will/create/later', null=True, blank=True)
     video = models.FileField(upload_to='will/create/later', null=True, blank=True)
