@@ -25,12 +25,11 @@ urlpatterns = [
     path('accounts/',include('log_in.urls')),
     path('accounts/',include('sign_up.urls')),
     path('accounts/',include('v_profile.urls')),
-#    path('accouns/',include('v_profile.urls.edit_profile')),
-    # path('reset/',password_reset,name="password_reset"),
     path('success/',SuccessView.as_view(),name='success'),
     path('activate/<uidb64>/<token>',VerificationView.as_view(),name="activate"),
     path('',include('core.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
