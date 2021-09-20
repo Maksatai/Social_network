@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from post.models import Post, Like
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from post.forms import NewPostForm
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -42,3 +44,19 @@ class UserPostListView(LoginRequiredMixin, ListView):
 
 class SuccessView(TemplateView):
     template_name = "success.html"
+
+
+@login_required
+def create_post(request):
+	user = request.user
+	if request.method == "POST":
+		form = NewPostForm(request.POST, request.FILES)
+		if form.is_valid():
+			data = form.save(commit=False)
+			data.user_name = user
+			data.save()
+			messages.success(request, f'Posted Successfully')
+			return redirect('home')
+	else:
+		form = NewPostForm()
+	return render(request, 'feed/create_post.html', {'form':form})

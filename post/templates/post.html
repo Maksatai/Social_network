@@ -5,20 +5,17 @@
             {% for post in posts %}
             <div class="card card-signin my-5">
                 <div class="card-body">
-                    {% if user.profile.avatar %}
                     <a href="{{ post.user }}"><img src="{{ post.user.profile.avatar.url }}" class="rounded-circle"
                         width="30" height="30" alt="" /></a>
-                    {% else %}
-                    <a href="{{ post.user }}"></a><img src="{% static 'media/Profile.png' %}" class="rounded-circle"
-                    width="30" height="30" alt=""/></a>
-                    {% endif %}
                 
                     <a class="text-dark" href="{{ post.user }}"><b>{{ post.user }}</b></a>
                     <br /><small class="text-muted">Posted on {{ post.created_at }}</small>
                     <br /><br />
                     <p class="card-text text-dark">{{ post.text }}</p>
                 </div>
-                <a href="{{ post.photo.url }}"><img class="card-img-top" src="{{ post.photo.url }}" alt="" /></a>
+                {% if post.photo %}
+                <a href="{{ post.photo }}"><img class="card-img-top" src="{{ post.photo.url }}" alt="" /></a>
+                {% endif %}
                 {% if post.tags %}
                 <br />
                 <p class="text-danger ml-3">
