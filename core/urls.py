@@ -6,4 +6,6 @@ from .views import HomeView, PostListView
 
 urlpatterns = [
     path('', PostListView.as_view(), name="homepage"),
+    path('post/<int:pk>/', views.post_detail, name='post-detail'),
+    path('like/', views.like, name='post-like'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

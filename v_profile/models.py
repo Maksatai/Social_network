@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+from autoslug import AutoSlugField
 
 GENDER_CHOICES = [
     ['male', u"Мужской"],
@@ -24,4 +26,11 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True, blank=True, verbose_name=u"Дата рождения")
     gender = models.CharField(max_length=10, verbose_name=u"Пол", choices=GENDER_CHOICES, default="male")
     relationship = models.CharField(max_length=20, verbose_name=u"Статус отношений", choices=REL_CHOICES, default="none")
+    slug = AutoSlugField(populate_from='user')
+
+    def __str__(self):
+        return str(self.user.username)
+
+    def get_absolute_url(self):
+        return "/users/{}".format(self.slug)
 

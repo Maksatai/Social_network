@@ -32,7 +32,7 @@
                             Like</a>
                         {{post.likes.count}} {% endif %}
                     </button>
-                    <a class="btn btn-outline-info" href="">Comments </a>
+                    <a class="btn btn-outline-info" href="{% url 'post-detail' post.id %}">Comments </a>
                 </div>
             </div>
             {% endfor %}

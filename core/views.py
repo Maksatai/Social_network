@@ -1,9 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from post.models import Post, Like
+from django.shortcuts import render, get_object_or_404, redirect
+from post.models import Post, Like, Comments
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from post.forms import NewPostForm
+from post.forms import NewPostForm, NewCommentForm
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -60,3 +60,40 @@ def create_post(request):
 	else:
 		form = NewPostForm()
 	return render(request, 'feed/create_post.html', {'form':form})
+
+
+@login_required
+def post_detail(request, pk):
+	post = get_object_or_404(Post, pk=pk)
+	user = request.user
+	is_liked =  Like.objects.filter(user=user, post=post)
+	if request.method == 'POST':
+		form = NewCommentForm(request.POST)
+		if form.is_valid():
+			data = form.save(commit=False)
+			data.post = post
+			data.username = user
+			data.save()
+			return redirect('post-detail', pk=pk)
+	else:
+		form = NewCommentForm()
+	return render(request, 'post_detail.html', {'post':post, 'is_liked':is_liked, 'form':form})
+
+
+@login_required
+def like(request):
+	post_id = request.GET.get("likeId", "")
+	user = request.user
+	post = Post.objects.get(pk=post_id)
+	liked= False
+	like = Like.objects.filter(user=user, post=post)
+	if like:
+		like.delete()
+	else:
+		liked = True
+		Like.objects.create(user=user, post=post)
+	resp = {
+        'liked':liked
+    }
+	response = json.dumps(resp)
+	return HttpResponse(response, content_type = "application/json")

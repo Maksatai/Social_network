@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, NewCommentForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -17,3 +18,5 @@ def create_post(request):
     
     post_form = PostForm()
     return render(request, '', {'post_form': post_form})
+
+
