@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-from core.views import SuccessView
 from sign_up.views import VerificationView
 
 urlpatterns = [
@@ -25,7 +24,6 @@ urlpatterns = [
     path('accounts/',include('log_in.urls')),
     path('accounts/',include('sign_up.urls')),
     path('accounts/',include('v_profile.urls')),
-    path('success/',SuccessView.as_view(),name='success'),
     path('activate/<uidb64>/<token>',VerificationView.as_view(),name="activate"),
     path('',include('core.urls')),
     path('accounts/',include('django.contrib.auth.urls')),

@@ -42,24 +42,21 @@ class UserPostListView(LoginRequiredMixin, ListView):
 		user = get_object_or_404(User, username=self.kwargs.get('username'))
 		return Post.objects.filter(user_name=user).order_by('-date_posted')
 
-class SuccessView(TemplateView):
-    template_name = "success.html"
-
 
 @login_required
 def create_post(request):
 	user = request.user
 	if request.method == "POST":
-		form = NewPostForm(request.POST, request.FILES)
+		form = NewPostForm(request.POST or None, request.FILES or None)
 		if form.is_valid():
 			data = form.save(commit=False)
-			data.user_name = user
+			data.user = user
 			data.save()
 			messages.success(request, f'Posted Successfully')
 			return redirect('home')
 	else:
 		form = NewPostForm()
-	return render(request, 'feed/create_post.html', {'form':form})
+	return render(request, 'creating.html', {'form': form})
 
 
 @login_required
