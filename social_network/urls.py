@@ -17,15 +17,13 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-from sign_up.views import VerificationView
+from user.views import VerificationView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/',include('log_in.urls')),
-    path('accounts/',include('sign_up.urls')),
-    path('accounts/',include('v_profile.urls')),
+    path('accounts/',include('user.urls')),
     path('activate/<uidb64>/<token>',VerificationView.as_view(),name="activate"),
-    path('',include('core.urls')),
+    path('',include('main.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
 
 ]

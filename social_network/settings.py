@@ -39,12 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'core',
-    'log_in',
-    'sign_up',
-    'friends',
-    'post',
-    'v_profile',
+    'main', 
+    'user',
 ]
 
 # SITE_ID=1
