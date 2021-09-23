@@ -108,3 +108,9 @@ class EditProfileView(TemplateView):
             return user.profile
         except:
             return None
+
+
+def friends_list(request):
+	u = request.user.profile
+	friends = u.friends.all()
+	return render(request, "friends.html", {'friends': friends})
