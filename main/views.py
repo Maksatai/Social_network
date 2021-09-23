@@ -4,20 +4,20 @@ from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from .models import Post, Like, Comments
 from .forms import NewPostForm, NewCommentForm
 import json
 
 
 class HomeView(TemplateView):
-    template_name = 'home.html'
+	template_name = 'home.html'
+
 
 def post(request):
-    post_objects = Post.objects.all()
-    return render(request, 'post.html', {'post': post_objects})
+	post_objects = Post.objects.all()
+	return render(request, 'post.html', {'post': post_objects})
 
-# def homepage(request):
-#     return render(request, 'base.html')
 
 class PostListView(ListView):
 	model = Post
@@ -54,6 +54,8 @@ class UserPostListView(LoginRequiredMixin, ListView):
 @login_required
 def create_post(request):
 	user = request.user
+	User = get_user_model()
+	users = User.objects.all()
 	if request.method == "POST":
 		form = NewPostForm(request.POST or None, request.FILES or None)
 		if form.is_valid():
@@ -64,7 +66,7 @@ def create_post(request):
 			return redirect('homepage')
 	else:
 		form = NewPostForm()
-	return render(request, 'creating.html', {'form': form})
+	return render(request, 'creating.html', {'form': form,'users':users})
 
 
 @login_required
