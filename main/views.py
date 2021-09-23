@@ -1,10 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Post, Like, Comments
 from .forms import NewPostForm, NewCommentForm
-from django.contrib import messages
+import json
+
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -84,7 +87,7 @@ def post_detail(request, pk):
 
 @login_required
 def like(request):
-	post_id = request.GET.get("likeId", "")
+	post_id = request.GET.get("likeId")
 	user = request.user
 	post = Post.objects.get(pk=post_id)
 	liked= False
@@ -94,8 +97,6 @@ def like(request):
 	else:
 		liked = True
 		Like.objects.create(user=user, post=post)
-	resp = {
-        'liked':liked
-    }
+	resp = {'liked':liked}
 	response = json.dumps(resp)
 	return HttpResponse(response, content_type = "application/json")
