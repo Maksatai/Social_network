@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Post, Like, Comments
+from .models import Post, Comments
 from .forms import NewPostForm, NewCommentForm
 import json
 
@@ -27,9 +28,9 @@ class PostListView(ListView):
 	paginate_by = 12
 	def get_context_data(self, **kwargs):
 		context = super(PostListView, self).get_context_data(**kwargs)
-		if self.request.user.is_authenticated:
-			liked = [i for i in Post.objects.all() if Like.objects.filter(user = self.request.user, post=i)]
-			context['liked_post'] = liked
+		# if self.request.user.is_authenticated:
+		# 	liked = [i for i in Post.objects.all() if Like.objects.filter(user = self.request.user, post=i)]
+		# 	context['liked_post'] = liked
 		return context
 
 
@@ -71,7 +72,7 @@ def create_post(request):
 def post_detail(request, pk):
 	post = get_object_or_404(Post, pk=pk)
 	user = request.user
-	is_liked =  Like.objects.filter(user=user, post=post)
+	# is_liked =  Like.objects.filter(user=user, post=post)
 	if request.method == 'POST':
 		form = NewCommentForm(request.POST)
 		if form.is_valid():
@@ -82,21 +83,18 @@ def post_detail(request, pk):
 			return redirect('post-detail', pk=pk)
 	else:
 		form = NewCommentForm()
-	return render(request, 'post_detail.html', {'post':post, 'is_liked':is_liked, 'form':form})
+	return render(request, 'post_detail.html', {'post':post, 'form':form}) 
 
 
 @login_required
-def like(request):
-	post_id = request.GET.get("likeId")
-	user = request.user
-	post = Post.objects.get(pk=post_id)
-	liked= False
-	like = Like.objects.filter(user=user, post=post)
-	if like:
-		like.delete()
-	else:
-		liked = True
-		Like.objects.create(user=user, post=post)
-	resp = {'liked':liked}
-	response = json.dumps(resp)
-	return HttpResponse(response, content_type = "application/json")
+def LikeView(request, pk):
+	post = get_object_or_404(Post, id=request.POST.get('post_id'))
+	post.likes.add(request.user)
+	return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+
+
+@login_required
+def LikeListView(request, pk):
+	post = get_object_or_404(Post, id=request.POST.get('post_id'))
+	post.likes.add(request.user)
+	return HttpResponseRedirect(reverse('homepage', args=[str(pk)]))

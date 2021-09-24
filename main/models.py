@@ -8,9 +8,9 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(null=True, blank=True)
     photo = models.ImageField(upload_to='media/images', null=True, blank=True)
-    video = models.FileField(upload_to='media/files', null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     tags = models.CharField(max_length=100, blank=True)
+    likes = models.ManyToManyField(User, related_name='blog_post')
 
     def __str__(self):
         return self.text
@@ -28,6 +28,6 @@ class Comments(models.Model):
 	comment = models.CharField(max_length=255)
 	comment_date = models.DateTimeField(default=timezone.now)
 
-class Like(models.Model):
-	user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
-	post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
+# class Like(models.Model):
+# 	user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+# 	post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
