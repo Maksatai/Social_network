@@ -29,28 +29,29 @@
         </p>
         {% endif %}
         <div class="card-footer">
-          
-          <form action="{% url 'like_post' post.pk %}" method="POST" >
+
+          <form action="{% url 'like_post' post.pk %}" method="POST">
             {% csrf_token %}
-            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{
+              total_likes }}</button>
           </form>
 
-          {% if post.user_name == user %}
+          {% if post.user == user %}
           <a class="btn btn-outline-info mr-3" href="{% url 'post-update' post.id %}">Update</a>
           <a class="btn btn-outline-danger" href="{% url 'post-delete' post.id %}">Delete</a>
           {% endif %}
         </div>
-        <div class="col-md-13">
+        <div class="card card-signin my-5">
           <div class="card-body">
             <form class="form-signin" method="POST" id="post-form">
               {% csrf_token %}
               <fieldset class="form-group">
-                <div class="container" style="display: inline-flex;flex-direction:row;">
-                  {{ form|crispy }}<button class="btn btn-primary" type="submit"
-                    style="margin-left:30px; font-size: 15px;">
-                    Comment</button>
-                </div>
+                {{ form|crispy }}
               </fieldset>
+              <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
+                  Comment</button><br />
+              </div>
             </form>
           </div>
         </div>
@@ -72,4 +73,3 @@
       </div>
     </div>
     {% endblock content %}
-

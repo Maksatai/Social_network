@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import ListView, TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, TemplateView, DetailView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Post, Comments
@@ -28,9 +28,6 @@ class PostListView(ListView):
 	paginate_by = 12
 	def get_context_data(self, **kwargs):
 		context = super(PostListView, self).get_context_data(**kwargs)
-		# if self.request.user.is_authenticated:
-		# 	liked = [i for i in Post.objects.all() if Like.objects.filter(user = self.request.user, post=i)]
-		# 	context['liked_post'] = liked
 		return context
 
 
@@ -68,11 +65,45 @@ def create_post(request):
 	return render(request, 'creating.html', {'form': form})
 
 
-@login_required
+# @login_required
+# def post_detail(request, pk):
+# 	post = get_object_or_404(Post, pk=pk)
+# 	user = request.user
+# 	if request.method == 'POST':
+# 		form = NewCommentForm(request.POST)
+# 		if form.is_valid():
+# 			data = form.save(commit=False)
+# 			data.post = post
+# 			data.username = user
+# 			data.save()
+# 			return redirect('post-detail', pk=pk)
+# 	else:
+# 		form = NewCommentForm()
+# 	
+
+# class PostDetailView(DetailView):
+# 	model = Post
+# 	template_name = 'post_detail.html'
+
+# 	def get_context_data(self, *args, **kwargs):
+
+# 		context = super(PostDetailView, self).get_context_data(**kwargs)
+# 		stuff = get_object_or_404(Post, id=self.kwargs['pk'])
+# 		total_likes = stuff.total_likes()
+# 		context['total_likes'] = total_likes
+# 		return context
+
 def post_detail(request, pk):
 	post = get_object_or_404(Post, pk=pk)
 	user = request.user
-	# is_liked =  Like.objects.filter(user=user, post=post)
+
+	def get_context_data(self, *args, **kwargs):
+		context = super(PostDetailView, self).get_context_data(**kwargs)
+		stuff = get_object_or_404(Post, id=self.kwargs['pk'])
+		total_likes = stuff.total_likes()
+		context['total_likes'] = total_likes
+		return context
+
 	if request.method == 'POST':
 		form = NewCommentForm(request.POST)
 		if form.is_valid():
@@ -94,7 +125,24 @@ def LikeView(request, pk):
 
 
 @login_required
-def LikeListView(request, pk):
-	post = get_object_or_404(Post, id=request.POST.get('post_id'))
-	post.likes.add(request.user)
-	return HttpResponseRedirect(reverse('homepage', args=[str(pk)]))
+def post_delete(request, pk):
+	post = Post.objects.get(pk=pk)
+	if request.user== post.user:
+		Post.objects.get(pk=pk).delete()
+	return redirect('homepage')
+
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+	model = Post
+	fields = ['text', 'tags']
+	template_name = 'creating.html'
+
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		return super().form_valid(form)
+
+	def test_func(self):
+		post = self.get_object()
+		if self.request.user == post.user:
+			return True
+		return False

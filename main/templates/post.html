@@ -23,10 +23,9 @@
                 </p>
                 {% endif %}
                 <div class="card-footer">
-                    <form action="{% url 'like_list_post' post.pk %}" method="POST">
+                    <form action="{% url 'like_post' post.pk %}" method="POST">
                         {% csrf_token %}
-                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like
-                            {{ post.likes.count }}</button>
+                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
                     </form>
                     <a class="btn btn-outline-info" href="{% url 'post-detail' post.id %}">Comments </a>
                 </div>

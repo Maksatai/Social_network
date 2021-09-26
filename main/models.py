@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils import timezone
+from django.urls import reverse
 from autoslug import AutoSlugField
 
 class Post(models.Model):
@@ -12,11 +13,14 @@ class Post(models.Model):
     tags = models.CharField(max_length=100, blank=True)
     likes = models.ManyToManyField(User, related_name='blog_post')
 
+    def total_likes(self):
+        return self.likes.count()
+
     def __str__(self):
         return self.text
 
-    # def get_absolute_url(self):
-	# 	return reverse('post-detail', kwargs={'pk': self.pk})
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs={'pk': self.pk})
   
     class Meta:
         verbose_name = 'Post'
