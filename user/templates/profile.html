@@ -24,31 +24,31 @@
                 <br>
                 <br>
                 {% if selected_user.id == user.id %}
-                    <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-info">Редактировать профиль</a><br><br>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-info">Edit profile</a><br><br>
                 {% endif %}
                 
             </div>
             <div class="col">
                 <dl class="row">
-                    <dt class="col-sm-3 text-right">Имя пользователя</dt>
+                    <dt class="col-sm-3 text-right">Username</dt>
                     <dd class="col-sm-9">{{ selected_user.username }}</dd>
 
                     <dt class="col-sm-3 text-right">Email</dt>
                     <dd class="col-sm-9">{{ selected_user.email }}</dd>
 
-                    <dt class="col-sm-3 text-right">Город</dt>
+                    <dt class="col-sm-3 text-right">City</dt>
                     <dd class="col-sm-9">{{ selected_user.profile.city }}</dd>
 
-                    <dt class="col-sm-3 text-right">Дата рождения</dt>
+                    <dt class="col-sm-3 text-right">Date of birth</dt>
                     <dd class="col-sm-9">{{ selected_user.profile.birth_date|date:"d M Y" }}</dd>
 
-                    <dt class="col-sm-3 text-right">Пол</dt>
+                    <dt class="col-sm-3 text-right">Gender</dt>
                     <dd class="col-sm-9">{{ selected_user.profile.get_gender_display }}</dd>
 
-                    <dt class="col-sm-3 text-right">Статус отношений</dt>
+                    <dt class="col-sm-3 text-right">Relationships</dt>
                     <dd class="col-sm-9">{{ selected_user.profile.get_relationship_display }}</dd>
 
-                    <dt class="col-sm-3 text-right">О себе</dt>
+                    <dt class="col-sm-3 text-right">Bio</dt>
                     <dd class="col-sm-9"><em style="font-family: 'Times New Roman', serif;">{{ selected_user.profile.bio|linebreaks }}</em></dd>
                 </dl>
             </div>

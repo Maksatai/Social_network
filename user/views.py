@@ -8,10 +8,12 @@ from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.decorators import login_required
 from .utils import token_generator
 from .service import send
-from .models import Profile
+from .models import Profile,FriendRequest
 from .forms import UserRegistrationForm, ProfileForm
+import random
 
 
 
@@ -111,12 +113,51 @@ class EditProfileView(TemplateView):
             return None
 
 
-def friends_list(request):
-	u = request.user.profile
-	friends = u.friends.all()
-	return render(request, "friends.html", {'friends': friends})
-
 class SuccessView(TemplateView):
     template_name = "success.html"
 
     
+
+
+@login_required
+def users_list(request):
+    users = Profile.objects.exclude(user=request.user)
+    sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
+    my_friends = request.user.profile.friends.all()
+    sent_to = []
+    friends = []
+    for user in my_friends:
+        friend = user.friends.all()
+        for f in friend:
+            if f in friends:
+                friend = friend.exclude(user=f.user)
+        friends += friend
+    for i in my_friends:
+        if i in friends:
+            friends.remove(i)
+    if request.user.profile in friends:
+        friends.remove(request.user.profile)
+    random_list = random.sample(list(users), min(len(list(users)), 10))
+    for r in random_list:
+        if r in friends:
+            random_list.remove(r)
+    friends += random_list
+    for i in my_friends:
+        if i in friends:
+            friends.remove(i)
+    for se in sent_friend_requests:
+        sent_to.append(se.to_user)
+    context = {
+        'users': friends,
+        'sent': sent_to
+    }
+    return render(request, "users_list.html", context)
+
+def friend_list(request):
+	p = request.user.profile
+	friends = p.friends.all()
+	context={
+	'friends': friends
+	}
+	return render(request, "friend_list.html", context)
+ 

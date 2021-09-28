@@ -26,13 +26,13 @@
           <div class="input-group">
           <input type="text" class="form-control rounded" placeholder="" name="search" aria-label="Search" value="{{request.GET.search}}" 
             aria-describedby="search-addon" />
-          <button type="submit" class="btn btn-outline-primary">поиск</button>
+          <button type="submit" class="btn btn-outline-primary">search</button>
         </div>
         </form> 
 
 
         </a>
-        <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'logout' %}"><b>Выйти</b></a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'logout' %}"><b>Log out</b></a>
     </nav>
     <hr><br>
 
@@ -40,12 +40,12 @@
         <section>
           <nav class="nav flex-column" style="width: 200px;margin-left: 30px;">
             <a class="nav-item nav-link" href="{% url 'create' %}"
-            ><b>Создать публикацию</b></a>
-            <a class="nav-link active" aria-current="page" href="{% url 'homepage' %}"><i class="fa fa-home" aria-hidden="true"></i>   Главная</a>
-            <a class="nav-link" href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i>   Мой профиль</a>
-            <a class="nav-link" href="#"><i class="fa fa-comment" aria-hidden="true"></i>   Мессенджер</a>
-            <a class="nav-link" href="#"><i class="fa fa-users" aria-hidden="true"></i>   Друзья</a>
-            <a class="nav-link" href="#"><i class="fa fa-cog" aria-hidden="true"></i>   Настройки</a>
+            ><b>Create post</b></a>
+            <a class="nav-link active" aria-current="page" href="{% url 'homepage' %}"><i class="fa fa-home" aria-hidden="true"></i>   Home</a>
+            <a class="nav-link" href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i>   My profile</a>
+            <a class="nav-link" href="#"><i class="fa fa-comment" aria-hidden="true"></i>   Messenger</a>
+            <a class="nav-link" href="{% url 'friend_list' %}"><i class="fa fa-users" aria-hidden="true"></i>   Friends</a>
+            <a class="nav-link" href="#"><i class="fa fa-cog" aria-hidden="true"></i>   Settings</a>
           </nav>
         </section>
         <section>
@@ -56,9 +56,9 @@
 
       </div>
     {% else %}
-      <h3 style="text-align: center; margin-top: 60px; margin-bottom: 30px;">Добро пожаловать в <b style="font-family: 'Lucida Handwriting',cursive; color: blue; font-size: 50px;">VFriends</b></h3>
-        <a href="{% url 'login' %}" style="margin-left: 550px;" class="btn btn-primary">Войти</a>
-        <a href="{% url 'signup' %}" class="btn btn-primary">Регистрация</a>
+      <h3 style="text-align: center; margin-top: 60px; margin-bottom: 30px;">Welcome to <b style="font-family: 'Lucida Handwriting',cursive; color: blue; font-size: 50px;">VFriends</b></h3>
+        <a href="{% url 'login' %}" style="margin-left: 550px;" class="btn btn-primary">Sign in</a>
+        <a href="{% url 'signup' %}" class="btn btn-primary">Sign up</a>
       
     {% endif %}
 </body>
