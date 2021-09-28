@@ -17,8 +17,6 @@ def post(request):
     post_objects = Post.objects.all()
     return render(request, 'post.html', {'post': post_objects})
 
-# def homepage(request):
-#     return render(request, 'base.html')
 
 class PostListView(ListView):
 	model = Post
@@ -39,14 +37,14 @@ class UserPostListView(LoginRequiredMixin, ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super(UserPostListView, self).get_context_data(**kwargs)
-		user = get_object_or_404(User, username=self.kwargs.get('username'))
-		liked = [i for i in Post.objects.filter(user_name=user) if Like.objects.filter(user = self.request.user, post=i)]
+		user = get_object_or_404(User, user=self.kwargs.get('user'))
+		liked = [i for i in Post.objects.filter(user=user) if Like.objects.filter(user = self.request.user, post=i)]
 		context['liked_post'] = liked
 		return context
 
 	def get_queryset(self):
-		user = get_object_or_404(User, username=self.kwargs.get('username'))
-		return Post.objects.filter(user_name=user).order_by('-date_posted')
+		user = get_object_or_404(User, user=self.kwargs.get('user'))
+		return Post.objects.filter(user=user).order_by('-date_posted')
 
 
 @login_required
@@ -65,22 +63,6 @@ def create_post(request):
 	return render(request, 'creating.html', {'form': form})
 
 
-# @login_required
-# def post_detail(request, pk):
-# 	post = get_object_or_404(Post, pk=pk)
-# 	user = request.user
-# 	if request.method == 'POST':
-# 		form = NewCommentForm(request.POST)
-# 		if form.is_valid():
-# 			data = form.save(commit=False)
-# 			data.post = post
-# 			data.username = user
-# 			data.save()
-# 			return redirect('post-detail', pk=pk)
-# 	else:
-# 		form = NewCommentForm()
-# 	
-
 # class PostDetailView(DetailView):
 # 	model = Post
 # 	template_name = 'post_detail.html'
@@ -96,13 +78,6 @@ def create_post(request):
 def post_detail(request, pk):
 	post = get_object_or_404(Post, pk=pk)
 	user = request.user
-
-	def get_context_data(self, *args, **kwargs):
-		context = super(PostDetailView, self).get_context_data(**kwargs)
-		stuff = get_object_or_404(Post, id=self.kwargs['pk'])
-		total_likes = stuff.total_likes()
-		context['total_likes'] = total_likes
-		return context
 
 	if request.method == 'POST':
 		form = NewCommentForm(request.POST)
@@ -127,7 +102,7 @@ def LikeView(request, pk):
 @login_required
 def post_delete(request, pk):
 	post = Post.objects.get(pk=pk)
-	if request.user== post.user:
+	if request.user == post.user:
 		Post.objects.get(pk=pk).delete()
 	return redirect('homepage')
 

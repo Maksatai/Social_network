@@ -25,19 +25,19 @@
         {% if post.tags %}
         <br />
         <p class="text-danger ml-3">
-          <b style="margin-left: 20px;">Tags: <i>{{ post.tags }}</i></b>
+          <b style="margin-left: 20px;"><i>{{ post.tags }}</i></b>
         </p>
         {% endif %}
         <div class="card-footer">
 
-          <form action="{% url 'like_post' post.pk %}" method="POST">
+          <form action="{% url 'post-like' post.pk %}" method="POST">
             {% csrf_token %}
             <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{
-              total_likes }}</button>
+              post.like.count }}</button>
           </form>
 
           {% if post.user == user %}
-          <a class="btn btn-outline-info mr-3" href="{% url 'post-update' post.id %}">Update</a>
+          <a class="btn btn-outline-info mr-3" href="{% url 'post-edit' post.id %}">Edit</a>
           <a class="btn btn-outline-danger" href="{% url 'post-delete' post.id %}">Delete</a>
           {% endif %}
         </div>
@@ -68,7 +68,7 @@
         <hr class="my-1" />
         {% endfor %}
         {% else %}
-        <p>No comments to show!</p>
+        <p style="margin-left: 15px;">No comments to show!</p>
         {% endif %}
       </div>
     </div>

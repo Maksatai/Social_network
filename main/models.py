@@ -13,9 +13,6 @@ class Post(models.Model):
     tags = models.CharField(max_length=100, blank=True)
     likes = models.ManyToManyField(User, related_name='blog_post')
 
-    def total_likes(self):
-        return self.likes.count()
-
     def __str__(self):
         return self.text
 
