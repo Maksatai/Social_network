@@ -19,11 +19,18 @@
         <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'profile' %}"><b>{{ user.username }}</b></a>
         <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'homepage' %}"><h1 style="font-family: 'Lucida Handwriting',cursive;">VFriends</h1></a>
         <a class="flex-sm-fill text-sm-center nav-link" >
-            <div class="input-group">
-                <input type="search" class="form-control rounded" placeholder="" aria-label="Search"
-                  aria-describedby="search-addon" />
-                <button type="button" class="btn btn-outline-primary">поиск</button>
-              </div>
+
+
+        <form method="GET" action="{% url 'search' %}" >
+          {% csrf_token %}
+          <div class="input-group">
+          <input type="text" class="form-control rounded" placeholder="" name="search" aria-label="Search" value="{{request.GET.search}}" 
+            aria-describedby="search-addon" />
+          <button type="submit" class="btn btn-outline-primary">поиск</button>
+        </div>
+        </form> 
+
+
         </a>
         <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'logout' %}"><b>Выйти</b></a>
     </nav>

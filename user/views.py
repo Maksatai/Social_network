@@ -14,6 +14,7 @@ from .models import Profile
 from .forms import UserRegistrationForm, ProfileForm
 
 
+
 class LoginView(TemplateView):
     template_name = "login.html"
 
@@ -114,3 +115,8 @@ def friends_list(request):
 	u = request.user.profile
 	friends = u.friends.all()
 	return render(request, "friends.html", {'friends': friends})
+
+class SuccessView(TemplateView):
+    template_name = "success.html"
+
+    
