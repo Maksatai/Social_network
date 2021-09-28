@@ -11,7 +11,7 @@ class Post(models.Model):
     photo = models.ImageField(upload_to='media/images', null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     tags = models.CharField(max_length=100, blank=True)
-    likes = models.ManyToManyField(User, related_name='blog_post')
+    likes = models.ManyToManyField(User, related_name='likes')
 
     def __str__(self):
         return self.text

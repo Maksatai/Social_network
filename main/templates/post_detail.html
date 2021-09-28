@@ -32,8 +32,7 @@
 
           <form action="{% url 'post-like' post.pk %}" method="POST">
             {% csrf_token %}
-            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{
-              post.likes.count }}</button>
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
           </form>
 
           {% if post.user == user %}

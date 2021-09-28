@@ -75,18 +75,6 @@ def create_post(request):
 	return render(request, 'creating.html', {'form': form,'users':users})
 
 
-# class PostDetailView(DetailView):
-# 	model = Post
-# 	template_name = 'post_detail.html'
-
-# 	def get_context_data(self, *args, **kwargs):
-
-# 		context = super(PostDetailView, self).get_context_data(**kwargs)
-# 		stuff = get_object_or_404(Post, id=self.kwargs['pk'])
-# 		total_likes = stuff.total_likes()
-# 		context['total_likes'] = total_likes
-# 		return context
-
 def post_detail(request, pk):
 	post = get_object_or_404(Post, pk=pk)
 	user = request.user
