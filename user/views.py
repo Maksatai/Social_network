@@ -116,4 +116,7 @@ def friends_list(request):
 	friends = u.friends.all()
 	return render(request, "friends.html", {'friends': friends})
 
+class SuccessView(TemplateView):
+    template_name = "success.html"
+
     

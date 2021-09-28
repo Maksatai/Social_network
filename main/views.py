@@ -19,6 +19,14 @@ def post(request):
 	return render(request, 'post.html', {'post': post_objects})
 
 
+def search(request):
+    if 'search' in request.GET and request.GET['search']:
+        q = request.GET['search']
+    posts = Post.objects.filter(text__icontains=q)
+    context = {'posts': posts}
+    return render(request, 'post.html', context)
+
+
 class PostListView(ListView):
 	model = Post
 	template_name = 'post.html'
