@@ -1,0 +1,41 @@
+{% extends 'base_registration.html' %}
+
+{% block content %}
+  <form method="POST">
+    {% csrf_token %}
+
+    {% if error %}
+        <p style="color:red">{{ error }}</p>
+    {% endif %}
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user ti-user"></i></span>
+        <input type="text" name="username" class="form-control" placeholder="Ваш логин">
+      </div>
+    </div>
+    
+    <hr class="hr-xs">
+
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-lock ti-unlock"></i></span>
+        <input type="password" name="password" class="form-control" placeholder="Ваш пароль">
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-block" type="submit">ВОЙТИ</button>
+    <div class="login-footer">
+      <h6>или войдите с помощью</h6>
+      <ul class="social-icons">
+        <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+    <div class="login-links">
+      <p>Еще нету аккаунта? <a class="txt-brand" href="{% url 'signup' %}"><font color=#29aafe>Регистрируйся</font></a></p>
+      <p><a href="#">Забыли пароль?</a></p>
+    </div>
+  </form>
+
+{% endblock content %}

@@ -1,0 +1,57 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container content">
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% elif message.tags == 'error' %}
+             <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+            {% endif %}
+        {% endfor %}
+        <div class="row" style="margin-left: 20px;">
+            <div class="col5">
+                {% if selected_user.profile.avatar %}
+                    <img src="{{ selected_user.profile.avatar.url }}" class="avatar-img img-thumbnail">
+                {% else %}
+                    <img src="{% static 'media/1.png' %}" class="avatar-img img-thumbnail">
+                {% endif %}
+                <br>
+                <br>
+                {% if selected_user.id == user.id %}
+                    <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-info">Редактировать профиль</a><br><br>
+                {% endif %}
+                
+            </div>
+            <div class="col">
+                <dl class="row">
+                    <dt class="col-sm-3 text-right">Имя пользователя</dt>
+                    <dd class="col-sm-9">{{ selected_user.username }}</dd>
+
+                    <dt class="col-sm-3 text-right">Email</dt>
+                    <dd class="col-sm-9">{{ selected_user.email }}</dd>
+
+                    <dt class="col-sm-3 text-right">Город</dt>
+                    <dd class="col-sm-9">{{ selected_user.profile.city }}</dd>
+
+                    <dt class="col-sm-3 text-right">Дата рождения</dt>
+                    <dd class="col-sm-9">{{ selected_user.profile.birth_date|date:"d M Y" }}</dd>
+
+                    <dt class="col-sm-3 text-right">Пол</dt>
+                    <dd class="col-sm-9">{{ selected_user.profile.get_gender_display }}</dd>
+
+                    <dt class="col-sm-3 text-right">Статус отношений</dt>
+                    <dd class="col-sm-9">{{ selected_user.profile.get_relationship_display }}</dd>
+
+                    <dt class="col-sm-3 text-right">О себе</dt>
+                    <dd class="col-sm-9"><em style="font-family: 'Times New Roman', serif;">{{ selected_user.profile.bio|linebreaks }}</em></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
