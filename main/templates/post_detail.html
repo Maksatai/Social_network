@@ -14,7 +14,7 @@
         <div class="card-body">
           <a href="{{ post.user.profile.get_absolute_url }}"><img src="{{ post.user.profile.avatar.url }}"
               class="rounded-circle" width="30" height="30" alt="" /></a>
-          <a class="text-dark" href="{{ post.user.profile.get_absolute_url }}"><b>{{ post.user_name }}</b></a>
+          <a class="text-dark" href="{{ post.user.profile.get_absolute_url }}"><b>{{ post.user }}</b></a>
           <br /><small class="text-muted">Posted on {{ post.created_at }}</small>
           <br /><br />
           <p class="card-text text-dark">{{ post.text }}</p>
@@ -25,36 +25,32 @@
         {% if post.tags %}
         <br />
         <p class="text-danger ml-3">
-          <b style="margin-left: 20px;">Tags: <i>{{ post.tags }}</i></b>
+          <b style="margin-left: 20px;"><i>{{ post.tags }}</i></b>
         </p>
         {% endif %}
         <div class="card-footer">
-          <button class="btn btn-white mr-3 like" id="{{ post.id }}">
-            {% if is_liked %}
-            <a href="{% url 'post-like' %}" style="color: red" id="likebtn{{ post.id }}">
-              Unlike {{post.likes.count}}</a>
-            {% else %}
-            <a href="{% url 'post-like' %}" style="color: green" id="likebtn{{ post.id }}">
-              Like {{post.likes.count}}</a>
-            {% endif %}
-          </button>
 
-          {% if post.user_name == user %}
-          <a class="btn btn-outline-info mr-3" href="{% url 'post-update' post.id %}">Update</a>
+          <form action="{% url 'post-like' post.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
+          </form>
+
+          {% if post.user == user %}
+          <a class="btn btn-outline-info mr-3" href="{% url 'post-edit' post.id %}">Edit</a>
           <a class="btn btn-outline-danger" href="{% url 'post-delete' post.id %}">Delete</a>
           {% endif %}
         </div>
-        <div class="col-md-13">
+        <div class="card card-signin my-5">
           <div class="card-body">
             <form class="form-signin" method="POST" id="post-form">
               {% csrf_token %}
               <fieldset class="form-group">
-                <div class="container" style="display: inline-flex;flex-direction:row;">
-                  {{ form|crispy }}<button class="btn btn-primary" type="submit"
-                    style="margin-left:30px; font-size: 15px;">
-                    Comment</button>
-                </div>
+                {{ form|crispy }}
               </fieldset>
+              <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
+                  Comment</button><br />
+              </div>
             </form>
           </div>
         </div>
@@ -71,35 +67,8 @@
         <hr class="my-1" />
         {% endfor %}
         {% else %}
-        <p>No comments to show!</p>
+        <p style="margin-left: 15px;">No comments to show!</p>
         {% endif %}
       </div>
     </div>
     {% endblock content %}
-
-    {% block jsfiles %}
-    <script>
-      $(".like").click(function (e) {
-        var id = this.id;
-        var href = $('.like').find('a').attr('href');
-        e.preventDefault();
-
-        $.ajax({
-          url: href,
-          data: {
-            'likeId': id
-          },
-          success: function (response) {
-            if (response.liked) {
-              $('#likebtn' + id).html("Unlike | {{post.likes.count}}");
-              $('#likebtn' + id).css("color", "red")
-            }
-            else {
-              $('#likebtn' + id).html("Like | {{post.likes.count}}");
-              $('#likebtn' + id).css("color", "green")
-            }
-          }
-        })
-      });
-    </script>
-    {% endblock jsfiles %}

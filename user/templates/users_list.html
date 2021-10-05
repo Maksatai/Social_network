@@ -25,9 +25,8 @@
               height="40"
               alt=""
           /></a>
-          <a class="text-dark" href="{% url 'profile' %}"
-            ><b>{{ user_p }}</b></a
-          >
+          <a class="text-dark" href="{% url 'profile' user_p %}"><b>{{ user_p }}</b></a>
+
           {% if not user_p.user in sent %}
           <small class="float-right">
             <a
