@@ -17,6 +17,8 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Такой пользователь существует')
         return self.cleaned_data['username']
 
+    
+
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:

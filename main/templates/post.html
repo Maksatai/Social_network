@@ -1,9 +1,11 @@
-{% extends "home.html" %} {% load static %} {% block content %}
-<div class="container">
+{% extends "home.html" %} {% load static %} {% load crispy_forms_tags %}{% block content %}
+<div class="container" style="display: inline-flex;flex-direction:row;margin-left: 80px;">
+<section>
+<div class="container" style="width: 400px;">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-20">
             {% for post in posts %}
-            <div class="card card-signin my-5">
+            <div class="card card-signin">
                 <div class="card-body">
                     <a href="{{ post.user }}"><img src="{{ post.user.profile.avatar.url }}" class="rounded-circle"
                             width="30" height="30" alt="" /></a>
@@ -14,15 +16,16 @@
                     <p class="card-text text-dark">{{ post.text }}</p>
                 </div>
                 {% if post.photo %}
-                <a href="{{ post.photo }}"><img class="card-img-top" src="{{ post.photo.url }}" alt="" /></a>
+                <a href="{{ post.photo }}"><img class="card-img-top" src="{{ post.photo.url }}" style="width: 300px;height: 300px;" /></a>
                 {% endif %}
-                {% if post.tags %}
+
+                <div class="card-footer" style="display: flex;flex-direction:row;justify-content: space-around;">
+                                  {% if post.tags %}
                 <br />
                 <p class="text-danger ml-3">
                     <b style="margin-left: 10px;"><i>{{ post.tags }}</i></b>
                 </p>
                 {% endif %}
-                <div class="card-footer">
                     <form action="{% url 'post-like' post.pk %}" method="POST">
                         {% csrf_token %}
                         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
@@ -34,6 +37,34 @@
         
         </div>
     </div>
+</div>
+</section>
+<section>
+<div class="container" style="margin-left: 30px;">
+    <div class="row">
+      <div class="col-sm-5 col-md-8 col-lg-11 mx-auto">
+        <div class="card card-signin">
+          <div class="card-body">
+            <h5 class="card-title text-center"><b>Add new post</b></h5>
+            <form class="form-signin" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <fieldset class="form-group">
+                <br/>
+                <!-- {{ form|crispy }} -->
+                <textarea class="form-control form-control-sm" type="text" name="text"
+                                      placeholder="What's new?" required></textarea>
+                <label for="image">Attach a photo:</label>
+                <input class="form-control form-control-sm" type="file" name="photo"><br>
+                <input class = "form-control form-control-sm" type="text" name="tags" placeholder="Tag"><br>
+                <input class="form-control btn btn-outline-success btn-sm" type="submit" value="Add">
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </div>
 
 {% if is_paginated %}
@@ -56,4 +87,4 @@
 
     {% endif %}
 
-    {% endblock content %}
+{% endblock content %}

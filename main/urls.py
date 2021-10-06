@@ -7,7 +7,6 @@ from .views import HomeView, PostListView, LikeView, PostUpdateView, search, Use
 urlpatterns = [
     path('', PostListView.as_view(), name="homepage"),
     path('post/<int:pk>/', views.post_detail, name='post-detail'),
-    path('post/create/', views.create_post, name='create'),
     path('like/<int:pk>', LikeView, name='post-like'),
     path('delete/<int:pk>', views.post_delete, name='post-delete'),
     path('update/<int:pk>', PostUpdateView.as_view(), name='post-edit'),

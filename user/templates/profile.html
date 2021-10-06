@@ -2,65 +2,7 @@
 {% load static %}
 {% block content %}
 
-    <!-- <div class="container content">
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="alert alert-success" role="alert">
-                    {{ message }}
-                </div>
-            {% elif message.tags == 'error' %}
-             <div class="alert alert-danger" role="alert">
-                {{ message }}
-            </div>
-            {% endif %}
-        {% endfor %}
-        <div class="row" style="margin-left: 20px;">
-            <div class="col5">
-                {% if selected_user.profile.avatar %}
-                    <img src="{{ selected_user.profile.avatar.url }}" class="avatar-img img-thumbnail">
-                {% else %}
-                    <img src="{% static 'media/Profile.png' %}" class="avatar-img img-thumbnail">
-                {% endif %}
-                <br>
-                <br>
-                {% if selected_user.id == user.id %}
-                    <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-info">Edit profile</a><br><br>
-                {% endif %}
-                
-            </div>
-            <div class="col">
-                <dl class="row">
-                    <dt class="col-sm-3 text-right">Username</dt>
-                    <dd class="col-sm-9">{{ selected_user.username }}</dd>
-
-                    <dt class="col-sm-3 text-right">Email</dt>
-                    <dd class="col-sm-9">{{ selected_user.email }}</dd>
-
-                    <dt class="col-sm-3 text-right">City</dt>
-                    <dd class="col-sm-9">{{ selected_user.profile.city }}</dd>
-
-                    <dt class="col-sm-3 text-right">Date of birth</dt>
-                    <dd class="col-sm-9">{{ selected_user.profile.birth_date|date:"d M Y" }}</dd>
-
-                    <dt class="col-sm-3 text-right">Gender</dt>
-                    <dd class="col-sm-9">{{ selected_user.profile.get_gender_display }}</dd>
-
-                    <dt class="col-sm-3 text-right">Relationships</dt>
-                    <dd class="col-sm-9">{{ selected_user.profile.get_relationship_display }}</dd>
-
-                    <dt class="col-sm-3 text-right">Bio</dt>
-                    <dd class="col-sm-9"><em style="font-family: 'Times New Roman', serif;">{{ selected_user.profile.bio|linebreaks }}</em></dd>
-                </dl>
-            </div>
-        </div>
-    </div> -->
-
-
-
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
-    <script src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
-    <script src="https://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.js"></script>
 
     {% for message in messages %}
     {% if message.tags == 'success' %}
@@ -78,58 +20,59 @@
          <div class="row" id="real-estates-detail">
          <div class="col-lg-4 col-md-4 col-xs-12">
          <div class="panel panel-default">
-         <div class="panel-heading">
-         <header class="panel-title">
-         <div class="text-center">
-         <strong>User</strong>
-         </div>
-         </header>
-         </div>
-         <div class="panel-body">
-         <div class="text-center" id="author">
-        {% if selected_user.profile.avatar %}
-            <img src="{{ selected_user.profile.avatar.url }}" class="avatar-img img-thumbnail">
-        {% else %}
-            <img src="{% static 'media/Profile.png' %}" class="avatar-img img-thumbnail">
-        {% endif %}
-         <h3>{{ selected_user.username }}</h3>
-         <p>{{ selected_user.profile.bio|linebreaks }}</p>
+
+         <div class="card" style="width: 18rem;">
+            <div class="text-center">
+                <strong>User</strong>
+                <hr>
+                     <img src="{{ selected_user.profile.avatar.url }}" class="avatar-img img-thumbnail">
+            <div class="card-body">
+              <h5 class="card-title">{{ selected_user.username }}</h5>
+              <p class="card-text">{{ selected_user.profile.bio|linebreaks }}</p>
+              {% if selected_user.id == user.id %}
+              <a class="btn btn-primary" href="{% url 'edit_profile' selected_user.username %}">Edit profile</a>
+                {% else %}
+                <a class="btn btn-primary" href="#">Write</a>
+                {% endif %}
+            </div>
+          </div>
+        </div>
 
          </div>
          </div>
-         </div>
-         </div>
-         <div class="col-lg-4 col-md-4 col-xs-12">
-         <div class="panel">
-         <div class="panel-body">
-         <ul id="myTab" class="nav nav-pills">
-         <li class="active"><a href="#detail" data-toggle="tab">About user</a></li>
-         {% if selected_user.id == user.id %}
-         <li class=""><a href="{% url 'edit_profile' %}" data-toggle="submit">Edit profile</a></li>
-         <!-- <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-info">Edit profile</a><br><br> -->
-         {% else %}
-         <li class=""><a href="#contact" data-toggle="tab">Написать</a></li>
-        {% endif %}
 
-        
-         </ul>
-         <div id="myTabContent" class="tab-content">
-        <hr>
-         <div class="tab-pane fade active in" id="detail">
-         <h4>Profile</h4>
-         <table class="table table-th-block">
-         <tbody>
-         <tr><td class="active">City:</td><td>{{ selected_user.profile.city }}</td></tr>
-         <tr><td class="active">Email:</td><td>{{ selected_user.email }}</td></tr>
-         <tr><td class="active">Date of birth:</td><td>{{ selected_user.profile.birth_date|date:"d M Y" }}</td></tr>
-         <tr><td class="active">Gender:</td><td>{{ selected_user.profile.get_gender_display }}</td></tr>
-         <tr><td class="active">Relationships:</td><td>{{ selected_user.profile.get_relationship_display }}</td></tr>
-   </tbody>
-         </table>
-         </div>
-         </div>
-         </div>
-         </div>
+        <div class="card" style="margin-left: 80px; width: 500px;">
+        <div class="container">
+            <br>
+         </div><br>
+         <div class="container">
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Email</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.email }}</dd>
+
+            </div>
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">City</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.city }}</dd>
+
+            </div>
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Date of birth</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.birth_date|date:"d M Y" }}</dd>
+            </div>
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Gender</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.get_gender_display }}</dd>
+            </div>
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Relationships</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.get_relationship_display }}</dd>
+
+            </div>
+
+        </div><br>
+          </div>
+            
          </div>
         </div>
 

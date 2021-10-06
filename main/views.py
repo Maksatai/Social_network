@@ -9,15 +9,33 @@ from django.contrib.auth import get_user_model
 from .models import Post, Comments
 from .forms import NewPostForm, NewCommentForm
 import json
+from django.utils import timezone
 
 
 class HomeView(TemplateView):
 	template_name = 'home.html'
 
-
+@login_required
 def post(request):
 	post_objects = Post.objects.all()
-	return render(request, 'post.html', {'post': post_objects})
+	user = request.user
+	User = get_user_model()
+	if request.method == "POST":
+		form = NewPostForm(request.POST or None, request.FILES or None)
+	if form.is_valid():
+		data = form.save(commit=False)
+		data.user = user
+		data.save()
+		messages.success(request, f'Posted Successfully')
+		return redirect('homepage')
+	else:
+		form = NewPostForm()
+	print(form)
+	context = {
+		'post': post_objects,
+		'form':form
+	}
+	return render(request, 'post.html', context)
 
 
 def search(request):
@@ -28,15 +46,28 @@ def search(request):
     return render(request, 'post.html', context)
 
 
-class PostListView(ListView):
-	model = Post
+class PostListView(TemplateView):
 	template_name = 'post.html'
-	context_object_name = 'posts'
-	ordering = ['-created_at']
 	paginate_by = 12
-	def get_context_data(self, **kwargs):
-		context = super(PostListView, self).get_context_data(**kwargs)
-		return context
+	
+	def dispatch(self, request, *args, **kwargs):
+		User = get_user_model()
+		form = NewPostForm(request.POST or None, request.FILES or None)
+
+		if request.method == 'POST':
+			form = NewPostForm(request.POST, request.FILES)
+			if form.is_valid():
+				form.instance.user = request.user
+				form.save()
+				return redirect(reverse("homepage"))
+			else:
+				form = NewPostForm()
+		context = {
+			'posts': Post.objects.filter(created_at__lte=timezone.now()).order_by('-created_at'),
+			'form':form
+		}
+		return render(request, self.template_name, context)
+
 
 
 class UserPostListView(LoginRequiredMixin, ListView):
@@ -57,22 +88,22 @@ class UserPostListView(LoginRequiredMixin, ListView):
 		return Post.objects.filter(user=user).order_by('-date_posted')
 
 
-@login_required
-def create_post(request):
-	user = request.user
-	User = get_user_model()
-	users = User.objects.all()
-	if request.method == "POST":
-		form = NewPostForm(request.POST or None, request.FILES or None)
-		if form.is_valid():
-			data = form.save(commit=False)
-			data.user = user
-			data.save()
-			messages.success(request, f'Posted Successfully')
-			return redirect('homepage')
-	else:
-		form = NewPostForm()
-	return render(request, 'creating.html', {'form': form,'users':users})
+# @login_required
+# def create_post(request):
+# 	user = request.user
+# 	User = get_user_model()
+# 	users = User.objects.all()
+# 	if request.method == "POST":
+# 		form = NewPostForm(request.POST or None, request.FILES or None)
+# 		if form.is_valid():
+# 			data = form.save(commit=False)
+# 			data.user = user
+# 			data.save()
+# 			messages.success(request, f'Posted Successfully')
+# 			return redirect('homepage')
+# 	else:
+# 		form = NewPostForm()
+# 	return render(request, 'creating.html', {'form': form,'users':users})
 
 
 def post_detail(request, pk):

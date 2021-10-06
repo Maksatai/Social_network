@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render,redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -85,25 +85,30 @@ class VerificationView(TemplateView):
             return HttpResponse('Activation link is invalid!')
 
 
+
+
 class ProfileView(TemplateView):
     template_name = "profile.html"
 
     def dispatch(self, request, username):
+        user = User.objects.get(username=username)
         if not Profile.objects.filter(user=request.user).exists():
-            return redirect(reverse("edit_profile"))
+            return redirect(reverse("edit_profile",username))
         context = {
             'selected_user': request.user
         }
-        user = User.objects.get(username=username)
+
         context = {
         'selected_user': user
         }
         return render(request, self.template_name, context)
 
+
+
 class EditProfileView(TemplateView):
     template_name = "edit_profile.html"
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request,username):
         form = ProfileForm(instance=self.get_profile(request.user))
         if request.method == 'POST':
             form = ProfileForm(request.POST, request.FILES, instance=self.get_profile(request.user))
@@ -111,7 +116,7 @@ class EditProfileView(TemplateView):
                 form.instance.user = request.user
                 form.save()
                 messages.success(request, u"Профиль успешно обновлен!")
-                return redirect(reverse("profile"))
+                return redirect(reverse("profile",username))
         return render(request, self.template_name, {'form': form})
 
     def get_profile(self, user):
@@ -119,6 +124,8 @@ class EditProfileView(TemplateView):
             return user.profile
         except:
             return None
+
+
 
 
 class SuccessView(TemplateView):

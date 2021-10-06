@@ -9,6 +9,9 @@ class PostForm(forms.ModelForm):
         fields = [ 'text', 'photo', 'created_at']
 
 class NewPostForm(forms.ModelForm):
+	# text = forms.TextInput(widget = forms.TextInput(attrs={'placeholder':'text'}))
+	# tags = forms.TextInput(widget = forms.TextInput(attrs={'placeholder':'hashtag'}))
+	# photo = forms.ImageField(widget = forms.ImageField)
 	class Meta:
 		model = Post
 		fields = ['text', 'photo', 'tags']

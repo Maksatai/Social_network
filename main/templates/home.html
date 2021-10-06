@@ -40,8 +40,6 @@
       <div class="container" style="display: inline-flex;flex-direction:row;">
         <section>
           <nav class="nav flex-column" style="width: 200px;margin-left: 30px;">
-            <a class="nav-item nav-link" href="{% url 'create' %}"
-            ><b>Create post</b></a>
             <a class="nav-link active" aria-current="page" href="{% url 'homepage' %}"><i class="fa fa-home" aria-hidden="true"></i>   Home</a>
             <a class="nav-link" href="{% url 'profile' user.username %}"><i class="fa fa-user" aria-hidden="true"></i>   My profile</a>
             <a class="nav-link" href="#"><i class="fa fa-comment" aria-hidden="true"></i>   Messenger</a>
@@ -50,11 +48,9 @@
           </nav>
         </section>
         <section>
-
           {% block content %}
           {% endblock content %}
         </section>
-
       </div>
     {% else %}
       <h3 style="text-align: center; margin-top: 60px; margin-bottom: 30px;">Welcome to <b style="font-family: 'Lucida Handwriting',cursive; color: blue; font-size: 50px;">VFriends</b></h3>
