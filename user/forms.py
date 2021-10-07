@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import Profile
 
+
 class UserRegistrationForm(forms.ModelForm):
     username = forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control','placeholder':'Имя пользователя'}))
     email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'form-control','placeholder':'Почта'}))

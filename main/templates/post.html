@@ -28,10 +28,13 @@
                 </div>
                 <p class="text-danger ml-3">
                     <b style="margin-left: 10px;"><i>{{ post.tags }}</i></b>
+                    <div class="container" style="display: flex;justify-content:space-between;">
                     <form action="{% url 'post-like' post.pk %}" method="POST">
                         {% csrf_token %}
                         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
                     </form>
+                    <a href="{% url 'post-detail' post.id %}"><img src="{% static 'media/more.png' %}"></a>
+                    </div>
                 </p>
             </div>
             <div class="card-footer">

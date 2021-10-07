@@ -186,3 +186,5 @@ def friend_list(request):
 def delete_friend(request,id):
     return HttpResponse("Вы хотите удалить друга!!")
 
+def search_users(request):
+    return HttpResponse("Ищете друга?")

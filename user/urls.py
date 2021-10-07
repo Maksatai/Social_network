@@ -10,5 +10,6 @@ urlpatterns = [
     path('user/<username>', ViewUserView.as_view(), name="view_user"),
     path('friends/', friend_list, name="friend_list"),
     path('users/', users_list, name="users_list"),
-    path('delete_friend/<int:id>/',delete_friend, name="delete_friend")
+    path('delete_friend/<int:id>/',delete_friend, name="delete_friend"),
+    path('search_users/', search_users, name ="search_users")
 ]

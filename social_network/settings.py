@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
     'main', 
     'user',
-    'social_django',
+    # 'social_django',
 ]
 
 # SITE_ID=1
@@ -71,28 +71,28 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+                # 'social_django.context_processors.backends',
+                # 'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
-SOCIAL_AUTH_JSONFIELD_ENABLED = True
+# SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
-AUTHENTICATION_BACKENDS = [
+# AUTHENTICATION_BACKENDS = [
 
-    'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.linkedin.LinkedinOAuth2',
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-]
+#     'social_core.backends.facebook.FacebookOAuth2',
+#     'social_core.backends.linkedin.LinkedinOAuth2',
+#     # Needed to login by username in Django admin, regardless of `allauth`
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
 
-SOCIAL_AUTH_FACEBOOK_KEY = '359319715748901'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'bf57dbed9db8f56e98f7b86e57df8c08'
+# SOCIAL_AUTH_FACEBOOK_KEY = '359319715748901'
+# SOCIAL_AUTH_FACEBOOK_SECRET = 'bf57dbed9db8f56e98f7b86e57df8c08'
 
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '770fappxd3uofm'
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'FNTEWGVZDyFL7cb7'
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '770fappxd3uofm'
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'FNTEWGVZDyFL7cb7'
 
 WSGI_APPLICATION = 'social_network.wsgi.application'
 
@@ -169,5 +169,6 @@ EMAIL_PORT = 587
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = 'login'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
-SOCIAL_AUTH_LOGIN_URL = '/'
+
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
+# SOCIAL_AUTH_LOGIN_URL = '/'
