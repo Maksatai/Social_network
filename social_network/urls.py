@@ -25,6 +25,7 @@ urlpatterns = [
     path('activate/<uidb64>/<token>',VerificationView.as_view(),name="activate"),
     path('',include('main.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
+    path('social-auth/',include('social_django.urls',namespace="social" )),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
