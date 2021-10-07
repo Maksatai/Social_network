@@ -12,32 +12,6 @@ import json
 from django.utils import timezone
 
 
-class HomeView(TemplateView):
-	template_name = 'home.html'
-
-@login_required
-def post(request):
-	post_objects = Post.objects.all()
-	user = request.user
-	User = get_user_model()
-	if request.method == "POST":
-		form = NewPostForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		data = form.save(commit=False)
-		data.user = user
-		data.save()
-		messages.success(request, f'Posted Successfully')
-		return redirect('homepage')
-	else:
-		form = NewPostForm()
-	print(form)
-	context = {
-		'post': post_objects,
-		'form':form
-	}
-	return render(request, 'post.html', context)
-
-
 def search(request):
     if 'search' in request.GET and request.GET['search']:
         q = request.GET['search']
@@ -124,7 +98,7 @@ def post_delete(request, pk):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Post
-	fields = ['text', 'tags']
+	fields = ['text', 'photo', 'tags']
 	template_name = 'creating.html'
 
 	def form_valid(self, form):

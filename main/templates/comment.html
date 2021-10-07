@@ -1,7 +1,7 @@
 {% load static %}
 <div class="comment">
     <div class="post-title">
-        {% if comment.user.profile.avatar.name %}
+        {% if comment.username.profile.avatar.name %}
             <img src="{{ comment.username.profile.avatar.url }}" class="post-author-img img-thumbnail">
         {% else %}
             <img src="{% static 'media/1.png' %}" class="post-author-img img-thumbnail">
