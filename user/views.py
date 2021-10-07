@@ -24,6 +24,7 @@ class LoginView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         context = {}
         if request.method == 'POST':
+            user_form = UserRegistrationForm(request.POST)
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(request, username=username, password=password)
@@ -185,10 +186,3 @@ def friend_list(request):
 def delete_friend(request,id):
     return HttpResponse("Вы хотите удалить друга!!")
 
-def change_friends(request, operation, pk):
-    friend = User.objects.get(pk=pk)
-    if operation == 'add':
-        Friend.make_friend(request.user, friend)
-    elif operation == 'remove':
-        Friend.lose_friend(request.user, friend)
-    return redirect('profile')
