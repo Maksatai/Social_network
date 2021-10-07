@@ -79,36 +79,31 @@ class VerificationView(TemplateView):
             user.is_active = True
             user.save()
             login(request, user)
-            return redirect('homepage')
+            return redirect('edit_profile')
             return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
         else:
             return HttpResponse('Activation link is invalid!')
 
 
 
-
 class ProfileView(TemplateView):
     template_name = "profile.html"
 
-    def dispatch(self, request, username):
-        user = User.objects.get(username=username)
+    def dispatch(self, request, *args, **kwargs):
         if not Profile.objects.filter(user=request.user).exists():
-            return redirect(reverse("edit_profile",username))
+            return redirect(reverse("edit_profile"))
         context = {
             'selected_user': request.user
         }
-
-        context = {
-        'selected_user': user
-        }
         return render(request, self.template_name, context)
+
 
 
 
 class EditProfileView(TemplateView):
     template_name = "edit_profile.html"
 
-    def dispatch(self, request,username):
+    def dispatch(self, request, *args, **kwargs):
         form = ProfileForm(instance=self.get_profile(request.user))
         if request.method == 'POST':
             form = ProfileForm(request.POST, request.FILES, instance=self.get_profile(request.user))
@@ -116,7 +111,7 @@ class EditProfileView(TemplateView):
                 form.instance.user = request.user
                 form.save()
                 messages.success(request, u"Профиль успешно обновлен!")
-                return redirect(reverse("profile",username))
+                return redirect(reverse("profile"))
         return render(request, self.template_name, {'form': form})
 
     def get_profile(self, user):
@@ -124,6 +119,18 @@ class EditProfileView(TemplateView):
             return user.profile
         except:
             return None
+
+
+class ViewUserView(TemplateView):
+    template_name = "profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        username = kwargs['username']
+        try:
+            user = User.objects.get(username=username)
+            return render(request, self.template_name, {'selected_user': user})
+        except:
+            return redirect("/")
 
 
 
@@ -175,3 +182,13 @@ def friend_list(request):
 	}
 	return render(request, "friend_list.html", context)
  
+def delete_friend(request,id):
+    return HttpResponse("Вы хотите удалить друга!!")
+
+def change_friends(request, operation, pk):
+    friend = User.objects.get(pk=pk)
+    if operation == 'add':
+        Friend.make_friend(request.user, friend)
+    elif operation == 'remove':
+        Friend.lose_friend(request.user, friend)
+    return redirect('profile')

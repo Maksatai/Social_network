@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import ListView, TemplateView, DetailView, UpdateView
+from django.views.generic import ListView, TemplateView, DetailView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from .models import Post, Comments
+from .models import Post, Comment
 from .forms import NewPostForm, NewCommentForm
 import json
 from django.utils import timezone
@@ -53,7 +53,6 @@ class PostListView(TemplateView):
 	def dispatch(self, request, *args, **kwargs):
 		User = get_user_model()
 		form = NewPostForm(request.POST or None, request.FILES or None)
-
 		if request.method == 'POST':
 			form = NewPostForm(request.POST, request.FILES)
 			if form.is_valid():
@@ -62,9 +61,11 @@ class PostListView(TemplateView):
 				return redirect(reverse("homepage"))
 			else:
 				form = NewPostForm()
+
 		context = {
 			'posts': Post.objects.filter(created_at__lte=timezone.now()).order_by('-created_at'),
-			'form':form
+			'form':form,
+
 		}
 		return render(request, self.template_name, context)
 
@@ -87,23 +88,6 @@ class UserPostListView(LoginRequiredMixin, ListView):
 		user = get_object_or_404(User, user=self.kwargs.get('user'))
 		return Post.objects.filter(user=user).order_by('-date_posted')
 
-
-# @login_required
-# def create_post(request):
-# 	user = request.user
-# 	User = get_user_model()
-# 	users = User.objects.all()
-# 	if request.method == "POST":
-# 		form = NewPostForm(request.POST or None, request.FILES or None)
-# 		if form.is_valid():
-# 			data = form.save(commit=False)
-# 			data.user = user
-# 			data.save()
-# 			messages.success(request, f'Posted Successfully')
-# 			return redirect('homepage')
-# 	else:
-# 		form = NewPostForm()
-# 	return render(request, 'creating.html', {'form': form,'users':users})
 
 
 def post_detail(request, pk):
@@ -152,3 +136,14 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 		if self.request.user == post.user:
 			return True
 		return False
+
+class PostCommentView(View):
+    def dispatch(self, request, *args, **kwargs):
+        post_id = request.GET.get("post_id")
+        comment = request.GET.get("comment")
+        if comment and post_id:
+            post = Post.objects.get(pk=post_id)
+            comment = Comment(comment=comment, post=post, username=request.user)
+            comment.save()
+            return render(request, "comment.html", {'comment': comment})
+        return HttpResponse(status=500, content="")

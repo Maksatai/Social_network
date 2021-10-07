@@ -19,15 +19,14 @@
           {% for user_p in friends %}
           <a href="{{ user_p.get_absolute_url }}"
             ><img
-              src="{{ user_p.image.url }}"
+              src="{{ user_p.avatar.url }}"
               class="rounded mr-2"
               width="40"
               height="40"
               alt=""
           /></a>
-          <a class="text-dark" href="{{ user_p.get_absolute_url }}"
-            ><b>{{ user_p }}</b></a
-          >
+          <a class="text-dark" href="{% url 'view_user' user_p %}"><b>{{ user_p }}</b></a>
+
           <small
             ><a
               class="btn btn-danger float-right"

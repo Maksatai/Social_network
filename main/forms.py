@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comments
+from .models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
@@ -9,9 +9,6 @@ class PostForm(forms.ModelForm):
         fields = [ 'text', 'photo', 'created_at']
 
 class NewPostForm(forms.ModelForm):
-	# text = forms.TextInput(widget = forms.TextInput(attrs={'placeholder':'text'}))
-	# tags = forms.TextInput(widget = forms.TextInput(attrs={'placeholder':'hashtag'}))
-	# photo = forms.ImageField(widget = forms.ImageField)
 	class Meta:
 		model = Post
 		fields = ['text', 'photo', 'tags']
@@ -19,5 +16,5 @@ class NewPostForm(forms.ModelForm):
 
 class NewCommentForm(forms.ModelForm):
 	class Meta:
-		model = Comments
+		model = Comment
 		fields = ['comment']

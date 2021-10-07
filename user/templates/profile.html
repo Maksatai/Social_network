@@ -30,7 +30,7 @@
               <h5 class="card-title">{{ selected_user.username }}</h5>
               <p class="card-text">{{ selected_user.profile.bio|linebreaks }}</p>
               {% if selected_user.id == user.id %}
-              <a class="btn btn-primary" href="{% url 'edit_profile' selected_user.username %}">Edit profile</a>
+              <a class="btn btn-primary" href="{% url 'edit_profile' %}">Edit profile</a>
                 {% else %}
                 <a class="btn btn-primary" href="#">Write</a>
                 {% endif %}

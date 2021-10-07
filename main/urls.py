@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from . import views
-from .views import HomeView, PostListView, LikeView, PostUpdateView, search, UserPostListView
+from .views import HomeView, PostListView, LikeView, PostUpdateView, search, UserPostListView, PostCommentView
 
 urlpatterns = [
     path('', PostListView.as_view(), name="homepage"),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('update/<int:pk>', PostUpdateView.as_view(), name='post-edit'),
     path('search/', views.search, name='search'),
     path('user_posts/<str:username>', UserPostListView.as_view(), name='user-posts'),
+    path('post-comment/', PostCommentView.as_view(), name="com"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
