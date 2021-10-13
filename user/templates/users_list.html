@@ -14,9 +14,7 @@
       <div class="card card-signin my-5">
         <div class="card-body">
           {% for user_p in users %}
-          <a href="{{ user_p.get_absolute_url }}"
-            ><img
-              src="{{ user_p.avatar.url }}"
+          <a href="{{ user_p.get_absolute_url }}"><img src="{{ user_p.avatar.url }}"
               class="rounded mr-2"
               width="40"
               height="40"
@@ -28,7 +26,7 @@
           <small class="float-right">
             <a
               class="btn btn-primary mr-2"
-              href="#"
+              href="{% url 'friend_request' user_p.pk %}"
               >Add Friend</a
             >
           </small>
@@ -36,10 +34,12 @@
           <small class="float-right">
             <a
               class="btn btn-warning mr-2"
-              href="#"
+              href="{% url 'delete_request' 'Sender_deleting' user_p.pk %}"
               >Cancel Request</a
             >
           </small>
+
+
           {% endif %}
           <br /><br />
           {% endfor %}

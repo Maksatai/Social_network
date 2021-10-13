@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.conf import settings
 from autoslug import AutoSlugField
 
@@ -18,6 +18,8 @@ REL_CHOICES = [
     ['complicated', u"Complicated"],
 ]
 
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=u"User")
     avatar = models.FileField(verbose_name=u"Avatar", default='media/1.jpg')
@@ -28,6 +30,7 @@ class Profile(models.Model):
     relationship = models.CharField(max_length=20, verbose_name=u"Relationships", choices=REL_CHOICES, default="none")
     slug = AutoSlugField(populate_from='user')
     friends = models.ManyToManyField("Profile", blank=True)
+
 
     def __str__(self):
         return str(self.user.username)
