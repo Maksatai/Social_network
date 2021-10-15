@@ -22,7 +22,7 @@ def search(request):
 
 class PostListView(TemplateView):
 	template_name = 'post.html'
-	paginate_by = 12
+	paginate_by = 2
 	
 	def dispatch(self, request, *args, **kwargs):
 		User = get_user_model()
@@ -38,8 +38,8 @@ class PostListView(TemplateView):
 
 		context = {
 			'posts': Post.objects.filter(created_at__lte=timezone.now()).order_by('-created_at'),
+			'myposts': Post.objects.filter(user=request.user),
 			'form':form,
-
 		}
 		return render(request, self.template_name, context)
 

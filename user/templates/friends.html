@@ -1,14 +1,10 @@
 {% extends "feed/layout.html" %} {% load static %} {% block searchform %}
-<form
-  class="form-inline my-2 my-lg-0 ml-5"
-  action="{% url 'search_users' %}"
-  method="get"
->
+
+<form class="form-inline my-2 my-lg-0 ml-5" action="{% url 'search_users' %}" method="get">
   <input name="q" type="text" placeholder="Search users.." />
-  <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">
-    Search
-  </button>
+  <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">Search</button>
 </form>
+
 {% endblock searchform %} {% block content %}
 <div class="container">
   <div class="row">
@@ -31,7 +27,7 @@
           <small
             ><a
               class="btn btn-danger float-right"
-              href="{% url 'delete_friend' user_u.id %}"
+              href="#"
               >UnFriend</a
             ></small
           >
@@ -43,7 +39,7 @@
       <h5>
         <i
           >You have no friends now! Make some new
-          <a href="{% url 'users_list' %}">friends here!</a></i
+          <a href="#">friends here!</a></i
         >
       </h5>
       {% endif %}

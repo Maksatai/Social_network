@@ -1,47 +1,41 @@
 {% extends "home.html" %} {% load static %}
 {% block content %}
-<form class="form-inline my-2 my-lg-0 ml-5" action="{% url 'search_users' %}" method="get">
-  <input name="q" type="text"  value="{{request.GET.q}}" placeholder="Search users.." />
-  <button class="btn btn-primary my-2 my-sm-0 ml-4" type="submit">
-    Search
-  </button>
-</form>
 
+{% if is_empty %}
+<h1>No profiles to interact with</h1>
+{% endif %}
 <div class="container">
   <div class="row">
     <div class="col-md-8">
+      <form class="form-inline my-2 my-lg-0 ml-5" action="{% url 'search_users' %}" method="get">
+        <input name="q" type="text"  value="{{request.GET.q}}" placeholder="Search users.." />
+        <button class="btn btn-primary my-2 my-sm-0 ml-4" type="submit">
+          Search
+        </button>
+      </form>
       {% if users %}
       <div class="card card-signin my-5">
         <div class="card-body">
           {% for user_p in users %}
-          <a href="{{ user_p.get_absolute_url }}"><img src="{{ user_p.avatar.url }}"
-              class="rounded mr-2"
-              width="40"
-              height="40"
-              alt=""
-          /></a>
+          <div class="container" style="display: flex;justify-content: space-between;">
+          <div>
+          <a href="{{ user_p.get_absolute_url }}"><img src="{{ user_p.avatar.url }}" class="rounded mr-2" width="40" height="40"></a>
           <a class="text-dark" href="{% url 'view_user' user_p %}"><b>{{ user_p }}</b></a>
-
+          </div>
+          <div>
           {% if not user_p.user in sent %}
           <small class="float-right">
-            <a
-              class="btn btn-primary mr-2"
-              href="{% url 'friend_request' user_p.pk %}"
-              >Add Friend</a
-            >
+            <a class="btn btn-primary mr-2" href="#">Add Friend</a>
           </small>
           {% else %}
           <small class="float-right">
-            <a
-              class="btn btn-warning mr-2"
-              href="{% url 'delete_request' 'Sender_deleting' user_p.pk %}"
-              >Cancel Request</a
-            >
+            <a class="btn btn-warning mr-2" href="#">Cancel Request</a>
           </small>
 
-
           {% endif %}
-          <br /><br />
+          <br/><br/>
+        </div>
+        </div>
           {% endfor %}
         </div>
       </div>
@@ -68,5 +62,6 @@
       </div>
     </div>
   </div>
-  {% endblock content %}
 </div>
+
+  {% endblock content %}

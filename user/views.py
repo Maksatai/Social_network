@@ -12,7 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.decorators import login_required
 from .utils import token_generator
 from .service import send
-from .models import Profile, FriendRequest
+from .models import Profile
 from .forms import UserRegistrationForm, ProfileForm
 import random
 
@@ -134,46 +134,9 @@ class ViewUserView(TemplateView):
             return redirect("/")
 
 
-
-
 class SuccessView(TemplateView):
     template_name = "success.html"
     
-
-
-@login_required
-def users_list(request):
-    users = Profile.objects.exclude(user=request.user)
-    sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
-    my_friends = request.user.profile.friends.all()
-    sent_to = []
-    friends = []
-    for user in my_friends:
-        friend = user.friends.all()
-        for f in friend:
-            if f in friends:
-                friend = friend.exclude(user=f.user)
-        friends += friend
-    for i in my_friends:
-        if i in friends:
-            friends.remove(i)
-    if request.user.profile in friends:
-        friends.remove(request.user.profile)
-    random_list = random.sample(list(users), min(len(list(users)), 10))
-    for r in random_list:
-        if r in friends:
-            random_list.remove(r)
-    friends += random_list
-    for i in my_friends:
-        if i in friends:
-            friends.remove(i)
-    for se in sent_friend_requests:
-        sent_to.append(se.to_user)
-    context = {
-        'users': friends,
-        'sent': sent_to
-    }
-    return render(request, "users_list.html", context)
 
 def friend_list(request):
 	p = request.user.profile
@@ -184,49 +147,22 @@ def friend_list(request):
 	return render(request, "friend_list.html", context)
  
 
-
-def friend_request(request, pk):
-    sender = request.user
-    recipient = User.objects.get(id=pk)
-    model = FriendRequest.objects.get_or_create(from_user=request.user, to_user=recipient)
-    return redirect('users_list')
-
-def delete_request(request, operation, pk):
-    client1 = User.objects.get(id=pk)
-    print(client1)
-    if operation == 'Sender_deleting':
-        model1 = FriendRequest.objects.get(from_user=request.user, to_user=client1)
-        model1.delete()
-    elif operation == 'Receiver_deleting':
-        model2 = FriendRequest.objects.get(from_user=client1, to_user=request.user)
-        model2.delete()
-        return redirect('friend_list')
-
-    return redirect('users_list')
-
-
-def add_friend(request, pk):
-    new_friend = User.objects.get(id=pk)
-    fq = FriendRequest.objects.get(to_user=new_friend, from_user=request.user)
-    Friends1.make_friend(request.user, new_friend)
-    Friends1.make_friend(new_friend, request.user)
-    fq.delete()
-    return redirect('users_list')
-
-def remove_friend(request, pk):
-    new_friend = User.objects.get(id=pk)
-    Friends1.lose_friend(request.user, new_friend)
-    Friends1.lose_friend(new_friend, request.user)
-    return redirect('friend_list')
-
-
-
-
 @login_required
 def search_users(request):
 	query = request.GET.get('q')
-	object_list = User.objects.filter(username__icontains=query)
+	object_list = Profile.objects.filter(user__username__icontains=query)
 	context ={
 		'users': object_list
 	}
 	return render(request, "users_list.html", context)
+
+
+
+def profiles_list_view(request):
+    user = request.user
+    qs = Profile.objects.get_all_profiles(user)
+
+    context = {'users':qs}
+
+    return render(request, 'users_list.html', context)
+

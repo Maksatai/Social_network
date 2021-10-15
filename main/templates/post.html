@@ -1,6 +1,22 @@
+
 {% extends "home.html" %} {% load static %}{% load static my_filters %}{% block content %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
 <div class="container" style="display: inline-flex;flex-direction:row;margin-left: 80px;">
 <section>
+    <div class="container" style="display:flex;justify-content: space-around; width:400px; ">
+    <div class="timeline">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item"><a class = "nav-link active" href="#posts">All posts</a></li>
+        <li class ="nav-item"><a class = "nav-link" href="#myposts">My posts</a></li>
+    </ul>
+    </div>
+    </div>
+      <div class="tab-content">
+
+<div id="posts" class="tab-pane fade show active">
 <div class="container" style="width: 400px;">
   <div class="timeline">
     {% for post in posts %}
@@ -33,6 +49,13 @@
                         {% csrf_token %}
                         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
                     </form>
+                    <!-- <button class="btn btn-white mr-3 like" id="{{ post.id }}">
+                        {% if post in liked_post %}
+                            <a href="{% url 'post-like' %}" style="color:red;" id="likebtn{{ post.id }}"> Unlike</a> | {{post.likes.count}}
+                        {% else %}
+                            <a href="{% url 'post-like' %}" style="color:green;" id="likebtn{{ post.id }}"> Like</a> | {{post.likes.count}}
+                        {% endif %}
+                    </button> -->
                     <a href="{% url 'post-detail' post.id %}"><img src="{% static 'media/more.png' %}"></a>
                     </div>
                 </p>
@@ -59,11 +82,83 @@
             </div>
         </div>
     {% endfor %}
+
+</div>
+</div>
+</div>
+<div id="myposts" class="tab-pane fade">
+    <div class="container" style="width: 400px;">
+    <div class="timeline">
+    {% for post in myposts %}
+        <div class="card">
+            <div class="card-body post">
+                <div class="post-title">
+                    {% if post.user.profile.avatar.name %}
+                        <img src="{{ post.user.profile.avatar.url }}" class="post-author-img img-thumbnail">
+                    {% else %}
+                        <img src="{% static 'media/1.png' %}" class="post-author-img img-thumbnail">
+                    {% endif %}
+                    <div class="post-author">
+                        {{ post.user }}
+
+                    </div>
+                    <div class="post-datetime">
+                      {{ post.created_at }}
+                    </div>
+                </div>
+                {% if post.photo.name %}
+                    <img src="{{ post.photo.url }}" class="img-thumbnail"><br>
+                {% endif %}
+                <div class="post-text">
+                    {{ post.text|default_if_none:""|linebreaks|urlize }}
+                </div>
+                <p class="text-danger ml-3">
+                    <b style="margin-left: 10px;"><i>{{ post.tags }}</i></b>
+                    <div class="container" style="display: flex;justify-content:space-between;">
+                    <form action="{% url 'post-like' post.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
+                    </form>
+                    <!-- <button class="btn btn-white mr-3 like" id="{{ post.id }}">
+                        {% if post in liked_post %}
+                            <a href="{% url 'post-like' %}" style="color:red;" id="likebtn{{ post.id }}"> Unlike</a> | {{post.likes.count}}
+                        {% else %}
+                            <a href="{% url 'post-like' %}" style="color:green;" id="likebtn{{ post.id }}"> Like</a> | {{post.likes.count}}
+                        {% endif %}
+                    </button> -->
+                    <a href="{% url 'post-detail' post.id %}"><img src="{% static 'media/more.png' %}"></a>
+                    </div>
+                </p>
+            </div>
+            <div class="card-footer">
+                <div id="comments-list-post-{{ post.id }}">
+
+                    {% for comment in post.comments.all %}
+                        {% place_comment comment %}
+                    {% endfor %}
+
+                </div>
+                <div class="comment-form">
+                    {% if post.user.profile.avatar.name %}
+                        <img src="{{ post.user.profile.avatar.url }}" class="post-author-img img-thumbnail">
+                    {% else %}
+                        <img src="{% static 'media/1.png' %}" class="post-author-img img-thumbnail">
+                    {% endif %}
+                    <div style="display: flex; margin-top: 4px;">
+                        <input class="form-control form-control-sm comment-input"
+                               placeholder="Оставить комментарий"  data-post-id="{{ post.id }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}    
+</div>
+</div>
 </div>
 </div>
 </section>
 <section>
-<div class="container" style="margin-left: 30px;">
+<div class="container" style="margin-left: 30px;margin-top: 40px;">
     <div class="row">
       <div class="col-sm-5 col-md-8 col-lg-11 mx-auto">
         <div class="card card-signin">
@@ -108,5 +203,39 @@
     {% endif %}
 
     {% endif %}
+
+
+<script>
+    $(document).ready(function(){
+        $(".nav-tabs a").click(function(){
+            $(this).tab('show');
+        });
+    });
+</script>
+
+<!-- <script>
+    $(".like").click(function (e) {
+    var id = this.id;
+    var href = $('.like').find('a').attr('href');
+    e.preventDefault();
+
+    $.ajax({
+        url: href,
+        data: {
+          'likeId': id
+        },
+        success: function(response){
+          if(response.liked){
+            $('#likebtn' + id).html("Unlike");
+            $('#likebtn' + id).css("color", "red")
+          }
+          else{
+            $('#likebtn' + id).html("Like");
+            $('#likebtn' + id).css("color", "green")
+          }
+        }
+      })
+});
+</script> -->
 
 {% endblock content %}

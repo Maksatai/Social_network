@@ -10,6 +10,12 @@
   </button>
 </form>
 {% endblock searchform %} {% block content %}
+<!-- <h5>
+  <i
+    >All users
+    <a href="{% url 'all-profiles-view' %}">here!</a></i
+  >
+</h5> -->
 <div class="container">
   <div class="row">
     <div class="col-md-8">
@@ -30,7 +36,7 @@
           <small
             ><a
               class="btn btn-danger float-right"
-              href="{% url 'delete_friend' user_p.id %}"
+              href="#"
               >UnFriend</a
             ></small
           >
@@ -42,7 +48,7 @@
       <h5>
         <i
           >You have no friends now! Make some new
-          <a href="{% url 'users_list' %}">friends here!</a></i
+          <a href="{% url 'all-profiles-view' %}">friends here!</a></i
         >
       </h5>
       {% endif %}
