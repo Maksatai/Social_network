@@ -28,7 +28,7 @@
           {% csrf_token %}
           <div class="input-group">
           <input type="text" class="form-control rounded" placeholder="Search posts..." name="search" aria-label="Search" value="{{request.GET.search}}" 
-            aria-describedby="search-addon" />
+            aria-describedby="search-addon" required>
           <button type="submit" class="btn btn-outline-primary">search</button>
         </div>
         </form> 

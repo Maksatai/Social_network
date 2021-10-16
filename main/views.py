@@ -35,10 +35,12 @@ class PostListView(TemplateView):
 				return redirect(reverse("homepage"))
 			else:
 				form = NewPostForm()
-
+		myposts=""
+		if request.user.is_authenticated:
+			myposts = Post.objects.filter(user=request.user)
 		context = {
 			'posts': Post.objects.filter(created_at__lte=timezone.now()).order_by('-created_at'),
-			'myposts': Post.objects.filter(user=request.user),
+			'myposts': myposts,
 			'form':form,
 		}
 		return render(request, self.template_name, context)
