@@ -1,6 +1,7 @@
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render,redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -8,10 +9,13 @@ from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.decorators import login_required
 from .utils import token_generator
 from .service import send
 from .models import Profile
 from .forms import UserRegistrationForm, ProfileForm
+import random
+
 
 
 
@@ -21,6 +25,7 @@ class LoginView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         context = {}
         if request.method == 'POST':
+            user_form = UserRegistrationForm(request.POST)
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(request, username=username, password=password)
@@ -30,6 +35,7 @@ class LoginView(TemplateView):
             else:
                 context['error'] = "Неправильный логин или пароль"
         return render(request, self.template_name, context)
+
 
 
 
@@ -62,13 +68,23 @@ class SignupView(TemplateView):
             user_form = UserRegistrationForm()
         return render(request, self.template_name, {'user_form': user_form})
 
+    
+
 class VerificationView(TemplateView):
     def get(self, request, uidb64, token):
-
-        # request.user.is_active=True
-        # request.user.save()
-        return redirect('homepage')
-        
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            return redirect('edit_profile')
+            return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        else:
+            return HttpResponse('Activation link is invalid!')
 
 
 
@@ -83,12 +99,8 @@ class ProfileView(TemplateView):
         }
         return render(request, self.template_name, context)
 
-    def user_profile(request, username):
-        user = User.objects.get(username=username)
-        context = {
-        'selected_user': request.user
-        }
-        return render(request, 'profile.html', context)
+
+
 
 class EditProfileView(TemplateView):
     template_name = "edit_profile.html"
@@ -111,12 +123,47 @@ class EditProfileView(TemplateView):
             return None
 
 
-def friends_list(request):
-	u = request.user.profile
-	friends = u.friends.all()
-	return render(request, "friends.html", {'friends': friends})
+class ViewUserView(TemplateView):
+    template_name = "profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        username = kwargs['username']
+        try:
+            user = User.objects.get(username=username)
+            return render(request, self.template_name, {'selected_user': user})
+        except:
+            return redirect("/")
+
 
 class SuccessView(TemplateView):
     template_name = "success.html"
-
     
+
+def friend_list(request):
+	p = request.user.profile
+	friends = p.friends.all()
+	context={
+	'friends': friends
+	}
+	return render(request, "friend_list.html", context)
+ 
+
+@login_required
+def search_users(request):
+	query = request.GET.get('q')
+	object_list = Profile.objects.filter(user__username__icontains=query)
+	context ={
+		'users': object_list
+	}
+	return render(request, "users_list.html", context)
+
+
+
+def profiles_list_view(request):
+    user = request.user
+    qs = Profile.objects.get_all_profiles(user)
+
+    context = {'users':qs}
+
+    return render(request, 'users_list.html', context)
+

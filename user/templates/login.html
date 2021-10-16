@@ -1,11 +1,11 @@
 {% extends 'base_registration.html' %}
 
 {% block content %}
-  <form method="POST">
+  <form method="POST" action="{% url 'login' %}">
     {% csrf_token %}
 
     {% if error %}
-        <p style="color:red">{{ error }}</p>
+      {{ error }}
     {% endif %}
     <div class="form-group">
       <div class="input-group">

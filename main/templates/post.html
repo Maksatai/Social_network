@@ -1,44 +1,173 @@
-{% extends "home.html" %} {% load static %} {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            {% for post in posts %}
-            <div class="card card-signin my-5">
-                <div class="card-body">
-                    <a href="{{ post.user }}"><img src="{{ post.user.profile.avatar.url }}" class="rounded-circle"
-                        width="30" height="30" alt="" /></a>
-                
-                    <a class="text-dark" href="{{ post.user }}"><b>{{ post.user }}</b></a>
-                    <br /><small class="text-muted">Posted on {{ post.created_at }}</small>
-                    <br /><br />
-                    <p class="card-text text-dark">{{ post.text }}</p>
+
+{% extends "home.html" %} {% load static %}{% load static my_filters %}{% block content %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<div class="container" style="display: inline-flex;flex-direction:row;margin-left: 80px;">
+<section>
+    <div class="container" style="display:flex;justify-content: space-around; width:400px; ">
+    <div class="timeline">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item"><a class = "nav-link active" href="#posts">All posts</a></li>
+        <li class ="nav-item"><a class = "nav-link" href="#myposts">My posts</a></li>
+    </ul>
+    </div>
+    </div>
+      <div class="tab-content">
+
+<div id="posts" class="tab-pane fade show active">
+<div class="container" style="width: 400px;">
+  <div class="timeline">
+    {% for post in posts %}
+        <div class="card">
+            <div class="card-body post">
+                <div class="post-title">
+                    {% if post.user.profile.avatar.name %}
+                        <img src="{{ post.user.profile.avatar.url }}" class="post-author-img img-thumbnail">
+                    {% else %}
+                        <img src="{% static 'media/1.png' %}" class="post-author-img img-thumbnail">
+                    {% endif %}
+                    <div class="post-author">
+                        {{ post.user }}
+
+                    </div>
+                    <div class="post-datetime">
+                      {{ post.created_at }}
+                    </div>
                 </div>
-                {% if post.photo %}
-                <a href="{{ post.photo }}"><img class="card-img-top" src="{{ post.photo.url }}" alt="" /></a>
+                {% if post.photo.name %}
+                    <img src="{{ post.photo.url }}" class="img-thumbnail"><br>
                 {% endif %}
-                {% if post.tags %}
-                <br />
+                <div class="post-text">
+                    {{ post.text|default_if_none:""|linebreaks|urlize }}
+                </div>
                 <p class="text-danger ml-3">
                     <b style="margin-left: 10px;"><i>{{ post.tags }}</i></b>
+                    <div class="container" style="display: flex;justify-content:space-between;">
+                    <form action="{% url 'post-like' post.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
+                    </form>
+                    <a href="{% url 'post-detail' post.id %}"><img src="{% static 'media/more.png' %}"></a>
+                    </div>
                 </p>
-                {% endif %}
-                <div class="card-footer">
-                    <button class="btn btn-white mr-3 like" id="{{ post.id }}">
-                        {% if post in liked_post %}
-                        <a href="" style="color: red" id="likebtn{{ post.id }}">
-                            Unlike</a>
-                        {{post.likes.count}} {% else %}
-                        <a href="" style="color: green" id="likebtn{{ post.id }}">
-                            Like</a>
-                        {{post.likes.count}} {% endif %}
-                    </button>
-                    <a class="btn btn-outline-info" href="{% url 'post-detail' post.id %}">Comments </a>
+            </div>
+            <div class="card-footer">
+                <div id="comments-list-post-{{ post.id }}">
+
+                    {% for comment in post.comments.all %}
+                        {% place_comment comment %}
+                    {% endfor %}
+
+                </div>
+                <div class="comment-form">
+                    {% if post.user.profile.avatar.name %}
+                        <img src="{{ post.user.profile.avatar.url }}" class="post-author-img img-thumbnail">
+                    {% else %}
+                        <img src="{% static 'media/1.png' %}" class="post-author-img img-thumbnail">
+                    {% endif %}
+                    <div style="display: flex; margin-top: 4px;">
+                        <input class="form-control form-control-sm comment-input"
+                               placeholder="Оставить комментарий"  data-post-id="{{ post.id }}">
+                    </div>
                 </div>
             </div>
-            {% endfor %}
-        
         </div>
+    {% endfor %}
+
+</div>
+</div>
+</div>
+<div id="myposts" class="tab-pane fade">
+    <div class="container" style="width: 400px;">
+    <div class="timeline">
+    {% for post in myposts %}
+        <div class="card">
+            <div class="card-body post">
+                <div class="post-title">
+                    {% if post.user.profile.avatar.name %}
+                        <img src="{{ post.user.profile.avatar.url }}" class="post-author-img img-thumbnail">
+                    {% else %}
+                        <img src="{% static 'media/1.png' %}" class="post-author-img img-thumbnail">
+                    {% endif %}
+                    <div class="post-author">
+                        {{ post.user }}
+
+                    </div>
+                    <div class="post-datetime">
+                      {{ post.created_at }}
+                    </div>
+                </div>
+                {% if post.photo.name %}
+                    <img src="{{ post.photo.url }}" class="img-thumbnail"><br>
+                {% endif %}
+                <div class="post-text">
+                    {{ post.text|default_if_none:""|linebreaks|urlize }}
+                </div>
+                <p class="text-danger ml-3">
+                    <b style="margin-left: 10px;"><i>{{ post.tags }}</i></b>
+                    <div class="container" style="display: flex;justify-content:space-between;">
+                    <form action="{% url 'post-like' post.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
+                    </form>
+                    <a href="{% url 'post-detail' post.id %}"><img src="{% static 'media/more.png' %}"></a>
+                    </div>
+                </p>
+            </div>
+            <div class="card-footer">
+                <div id="comments-list-post-{{ post.id }}">
+
+                    {% for comment in post.comments.all %}
+                        {% place_comment comment %}
+                    {% endfor %}
+
+                </div>
+                <div class="comment-form">
+                    {% if post.user.profile.avatar.name %}
+                        <img src="{{ post.user.profile.avatar.url }}" class="post-author-img img-thumbnail">
+                    {% else %}
+                        <img src="{% static 'media/1.png' %}" class="post-author-img img-thumbnail">
+                    {% endif %}
+                    <div style="display: flex; margin-top: 4px;">
+                        <input class="form-control form-control-sm comment-input"
+                               placeholder="Оставить комментарий"  data-post-id="{{ post.id }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}    
+</div>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="container" style="margin-left: 30px;margin-top: 40px;">
+    <div class="row">
+      <div class="col-sm-5 col-md-8 col-lg-11 mx-auto">
+        <div class="card card-signin">
+          <div class="card-body">
+            <h5 class="card-title text-center"><b>Add new post</b></h5>
+            <form class="form-signin" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <fieldset class="form-group">
+                <br/>
+                <textarea class="form-control form-control-sm" type="text" name="text"
+                                      placeholder="What's new?" required></textarea>
+                <label for="image">Attach a photo:</label>
+                <input class="form-control form-control-sm" type="file" id = "image" name="photo"><br>
+                <input class = "form-control form-control-sm" type="text" name="tags" placeholder="Tag"><br>
+                <input class="form-control btn btn-outline-success btn-sm" type="submit" value="Add">
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 </div>
 
 {% if is_paginated %}
@@ -61,4 +190,14 @@
 
     {% endif %}
 
-    {% endblock content %}
+
+<script>
+    $(document).ready(function(){
+        $(".nav-tabs a").click(function(){
+            $(this).tab('show');
+        });
+    });
+</script>
+
+
+{% endblock content %}

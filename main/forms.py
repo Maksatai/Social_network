@@ -1,20 +1,15 @@
 from django import forms
-from .models import Post, Comments
-
-
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        photo = forms.ImageField(required=False)
-        fields = [ 'text', 'photo', 'video', 'created_at']
+from .models import Post, Comment
 
 class NewPostForm(forms.ModelForm):
+
 	class Meta:
 		model = Post
-		fields = ['text', 'photo', 'video', 'tags']
+		fields = ['text', 'photo', 'tags']
 
 
 class NewCommentForm(forms.ModelForm):
+
 	class Meta:
-		model = Comments
+		model = Comment
 		fields = ['comment']

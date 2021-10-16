@@ -2,56 +2,79 @@
 {% load static %}
 {% block content %}
 
-    <div class="container content">
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="alert alert-success" role="alert">
-                    {{ message }}
-                </div>
-            {% elif message.tags == 'error' %}
-             <div class="alert alert-danger" role="alert">
-                {{ message }}
-            </div>
-            {% endif %}
-        {% endfor %}
-        <div class="row" style="margin-left: 20px;">
-            <div class="col5">
-                {% if selected_user.profile.avatar %}
-                    <img src="{{ selected_user.profile.avatar.url }}" class="avatar-img img-thumbnail">
-                {% else %}
-                    <img src="{% static 'media/1.png' %}" class="avatar-img img-thumbnail">
-                {% endif %}
-                <br>
-                <br>
-                {% if selected_user.id == user.id %}
-                    <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-info">Редактировать профиль</a><br><br>
-                {% endif %}
-                
-            </div>
-            <div class="col">
-                <dl class="row">
-                    <dt class="col-sm-3 text-right">Имя пользователя</dt>
-                    <dd class="col-sm-9">{{ selected_user.username }}</dd>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 
-                    <dt class="col-sm-3 text-right">Email</dt>
-                    <dd class="col-sm-9">{{ selected_user.email }}</dd>
-
-                    <dt class="col-sm-3 text-right">Город</dt>
-                    <dd class="col-sm-9">{{ selected_user.profile.city }}</dd>
-
-                    <dt class="col-sm-3 text-right">Дата рождения</dt>
-                    <dd class="col-sm-9">{{ selected_user.profile.birth_date|date:"d M Y" }}</dd>
-
-                    <dt class="col-sm-3 text-right">Пол</dt>
-                    <dd class="col-sm-9">{{ selected_user.profile.get_gender_display }}</dd>
-
-                    <dt class="col-sm-3 text-right">Статус отношений</dt>
-                    <dd class="col-sm-9">{{ selected_user.profile.get_relationship_display }}</dd>
-
-                    <dt class="col-sm-3 text-right">О себе</dt>
-                    <dd class="col-sm-9"><em style="font-family: 'Times New Roman', serif;">{{ selected_user.profile.bio|linebreaks }}</em></dd>
-                </dl>
-            </div>
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
         </div>
+    {% elif message.tags == 'error' %}
+     <div class="alert alert-danger" role="alert">
+        {{ message }}
     </div>
+    {% endif %}
+    {% endfor %}
+    <div class="container">
+
+         <div class="row" id="real-estates-detail">
+         <div class="col-lg-4 col-md-4 col-xs-12">
+         <div class="panel panel-default">
+
+         <div class="card" style="width: 18rem;">
+            <div class="text-center">
+                <strong>User</strong>
+                <hr>
+                     <img src="{{ selected_user.profile.avatar.url }}" class="avatar-img img-thumbnail">
+            <div class="card-body">
+              <h5 class="card-title">{{ selected_user.username }}</h5>
+              <p class="card-text">{{ selected_user.profile.bio|linebreaks }}</p>
+              {% if selected_user.id == user.id %}
+              <a class="btn btn-primary" href="{% url 'edit_profile' %}">Edit profile</a>
+                {% else %}
+                <a class="btn btn-primary" href="#">Write</a>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+
+         </div>
+         </div>
+
+        <div class="card" style="margin-left: 80px; width: 500px;">
+        <div class="container">
+            <br>
+         </div><br>
+         <div class="container">
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Email</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.email }}</dd>
+
+            </div>
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">City</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.city }}</dd>
+
+            </div>
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Date of birth</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.birth_date|date:"d M Y" }}</dd>
+            </div>
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Gender</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.get_gender_display }}</dd>
+            </div>
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Relationships</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.get_relationship_display }}</dd>
+
+            </div>
+
+        </div><br>
+          </div>
+            
+         </div>
+        </div>
+
+        </div>
 {% endblock content %}

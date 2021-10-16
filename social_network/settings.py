@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z#n+6+rwo(=#b9e73-qr9e&&h_#pqu&lofs#nbi4mv-2lyq_0m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+
     'main', 
     'user',
+    # 'social_django',
 ]
 
 # SITE_ID=1
@@ -68,11 +70,29 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # 'social_django.context_processors.backends',
+                # 'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
+# SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+# AUTHENTICATION_BACKENDS = [
+
+#     'social_core.backends.facebook.FacebookOAuth2',
+#     'social_core.backends.linkedin.LinkedinOAuth2',
+#     # Needed to login by username in Django admin, regardless of `allauth`
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
+
+# SOCIAL_AUTH_FACEBOOK_KEY = '359319715748901'
+# SOCIAL_AUTH_FACEBOOK_SECRET = 'bf57dbed9db8f56e98f7b86e57df8c08'
+
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '770fappxd3uofm'
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'FNTEWGVZDyFL7cb7'
 
 WSGI_APPLICATION = 'social_network.wsgi.application'
 
@@ -82,8 +102,12 @@ WSGI_APPLICATION = 'social_network.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'new_social_network',
+        'USER': 'postgres',
+        'PASSWORD': '12345',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -120,6 +144,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Static files (CSS, JavaScript, Images)
@@ -145,3 +171,6 @@ EMAIL_PORT = 587
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = 'login'
+
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
+# SOCIAL_AUTH_LOGIN_URL = '/'

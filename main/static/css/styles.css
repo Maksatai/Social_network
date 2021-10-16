@@ -58,6 +58,7 @@ ul.errorlist{
     margin-bottom: 20px;
 }
 
+
 .post{
     padding-bottom: 0;
 }
@@ -83,21 +84,12 @@ ul.errorlist{
     display: block;
 }
 
-.post-author a{
-    color: rgb(68, 91, 139);
-}
-
 .post-datetime{
     display: block;
     width: auto;
     overflow: hidden;
     height: 20px;
     font-size: 11px;
-    color: grey;
-}
-
-.post-datetime a{
-    text-decoration: underline;
     color: grey;
 }
 

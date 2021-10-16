@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import Profile
 
+
 class UserRegistrationForm(forms.ModelForm):
     username = forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control','placeholder':'Имя пользователя'}))
     email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'form-control','placeholder':'Почта'}))
@@ -17,6 +18,8 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Такой пользователь существует')
         return self.cleaned_data['username']
 
+    
+
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
@@ -31,4 +34,4 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        exclude = ['user']
+        exclude = ['user','friends']
