@@ -49,13 +49,6 @@
                         {% csrf_token %}
                         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
                     </form>
-                    <!-- <button class="btn btn-white mr-3 like" id="{{ post.id }}">
-                        {% if post in liked_post %}
-                            <a href="{% url 'post-like' %}" style="color:red;" id="likebtn{{ post.id }}"> Unlike</a> | {{post.likes.count}}
-                        {% else %}
-                            <a href="{% url 'post-like' %}" style="color:green;" id="likebtn{{ post.id }}"> Like</a> | {{post.likes.count}}
-                        {% endif %}
-                    </button> -->
                     <a href="{% url 'post-detail' post.id %}"><img src="{% static 'media/more.png' %}"></a>
                     </div>
                 </p>
@@ -119,13 +112,6 @@
                         {% csrf_token %}
                         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like {{ post.likes.count }}</button>
                     </form>
-                    <!-- <button class="btn btn-white mr-3 like" id="{{ post.id }}">
-                        {% if post in liked_post %}
-                            <a href="{% url 'post-like' %}" style="color:red;" id="likebtn{{ post.id }}"> Unlike</a> | {{post.likes.count}}
-                        {% else %}
-                            <a href="{% url 'post-like' %}" style="color:green;" id="likebtn{{ post.id }}"> Like</a> | {{post.likes.count}}
-                        {% endif %}
-                    </button> -->
                     <a href="{% url 'post-detail' post.id %}"><img src="{% static 'media/more.png' %}"></a>
                     </div>
                 </p>
@@ -213,29 +199,5 @@
     });
 </script>
 
-<!-- <script>
-    $(".like").click(function (e) {
-    var id = this.id;
-    var href = $('.like').find('a').attr('href');
-    e.preventDefault();
-
-    $.ajax({
-        url: href,
-        data: {
-          'likeId': id
-        },
-        success: function(response){
-          if(response.liked){
-            $('#likebtn' + id).html("Unlike");
-            $('#likebtn' + id).css("color", "red")
-          }
-          else{
-            $('#likebtn' + id).html("Like");
-            $('#likebtn' + id).css("color", "green")
-          }
-        }
-      })
-});
-</script> -->
 
 {% endblock content %}

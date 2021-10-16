@@ -51,31 +51,31 @@ class Profile(models.Model):
         return "/users/{}".format(self.slug)
 
 
-    def add_friend(self,account):
+    # def add_friend(self,account):
 
-        if not account in self.friends.all():
-            self.friends.add(account)
-            self.save
-
-
-    def remove_friend(self, account):
-
-        if account in self.friends.all():
-            self.friends.remove(account)
+    #     if not account in self.friends.all():
+    #         self.friends.add(account)
+    #         self.save
 
 
-    def unfriend(self, removee):
+    # def remove_friend(self, account):
 
-        remover_friends_list = self
-        remover_friends_list.remove_friend(removee)
-        friend_list = Profile.objects.get(user=removee)
-        friend_list.remove_friend(self.user)
+    #     if account in self.friends.all():
+    #         self.friends.remove(account)
 
-    def is_mutual_friend(self,friend):
 
-        if friend in self.friends.all():
-            return True
-        return False
+    # def unfriend(self, removee):
+
+    #     remover_friends_list = self
+    #     remover_friends_list.remove_friend(removee)
+    #     friend_list = Profile.objects.get(user=removee)
+    #     friend_list.remove_friend(self.user)
+
+    # def is_mutual_friend(self,friend):
+
+    #     if friend in self.friends.all():
+    #         return True
+    #     return False
         
 
 class FriendRequest(models.Model):
@@ -88,26 +88,26 @@ class FriendRequest(models.Model):
         return self.sender.username
 
 
-    def accept(self):
+    # def accept(self):
 
-        receiver_friend_list = FriendList.objects.get(user=self.receiver)
-        if receiver_friend_list:
-            receiver_friend_list.add_friend(self.sender)
-            sender_friend_list = FriendList.objects.get(user=self.sender)
-            if sender_friend_list:
-                sender_friend_list.add_friend(self.receiver)
-                self.is_active = False
-                self.save()
+    #     receiver_friend_list = FriendRequest.objects.get(user=self.receiver)
+    #     if receiver_friend_list:
+    #         receiver_friend_list.add_friend(self.sender)
+    #         sender_friend_list = FriendRequest.objects.get(user=self.sender)
+    #         if sender_friend_list:
+    #             sender_friend_list.add_friend(self.receiver)
+    #             self.is_active = False
+    #             self.save()
 
-    def decline(self):
+    # def decline(self):
 
-        self.is_active = False
-        self.save()
+    #     self.is_active = False
+    #     self.save()
 
-    def cancel(self):
+    # def cancel(self):
 
-        self.is_active = False
-        self.save()
+    #     self.is_active = False
+    #     self.save()
 
         
 
