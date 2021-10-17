@@ -62,8 +62,8 @@
 
                 </div>
                 <div class="comment-form">
-                    {% if post.user.profile.avatar.name %}
-                        <img src="{{ post.user.profile.avatar.url }}" class="post-author-img img-thumbnail">
+                    {% if request.user.profile.avatar.name %}
+                        <img src="{{ request.user.profile.avatar.url }}" class="post-author-img img-thumbnail">
                     {% else %}
                         <img src="{% static 'media/1.png' %}" class="post-author-img img-thumbnail">
                     {% endif %}

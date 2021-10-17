@@ -166,4 +166,3 @@ def profiles_list_view(request):
     context = {'users':qs}
 
     return render(request, 'users_list.html', context)
-
