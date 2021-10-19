@@ -19,8 +19,8 @@ def post_save_add_to_friends(sender, created, instance, **kwargs):
         receiver_.save()
 
 
-@receiver(pre_delete, sender = Relationship)
-def pre_delete_remove_from_friends(sender, created, instance, **kwargs):
+@receiver(pre_delete, sender=Relationship)
+def pre_delete_remove_from_friends(sender, instance, **kwargs):
     sender = instance.sender
     receiver = instance.receiver
     sender.friends.remove(receiver.user)

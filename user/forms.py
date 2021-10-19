@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.forms.widgets import TextInput, RadioSelect
+from django.forms import FileInput, Textarea
 from django import forms
 from .models import Profile
 
@@ -29,9 +31,24 @@ class UserRegistrationForm(forms.ModelForm):
         return cd['password2']
 
 
+class NumberInput(TextInput):
+    input_type = 'date'
+
+
+GENDER_CHOICES = [
+    ['male', u"Man"],
+    ['female', u"Woman"],
+]
+
 
 class ProfileForm(forms.ModelForm):
 
+    bio = forms.CharField(widget = forms.Textarea(attrs = {'rows':'3'}))
+    birth_date = forms.DateField(widget = NumberInput(attrs={'type': 'date'}))
+    gender = forms.ChoiceField(widget = RadioSelect, choices = GENDER_CHOICES)
+
+
     class Meta:
+        
         model = Profile
         exclude = ['user','friends']
