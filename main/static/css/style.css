@@ -161,10 +161,3 @@
 .social-icons a.linkedin:hover{
     background-color:#007bb6
 }
-
-ul.errorlist{
-    color: red;
-    list-style: none;
-    font-size: 12px;
-}
-ul,li{list-style-type: none;}

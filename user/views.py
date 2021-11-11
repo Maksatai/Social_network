@@ -217,7 +217,7 @@ def accept_invatation(request):
         if rel.status == 'send':
             rel.status = 'accepted'
             rel.save()
-    return redirect('my-invites-view')
+    return redirect('all-profiles-view')
 
 @login_required
 def reject_invatation(request):
@@ -227,7 +227,7 @@ def reject_invatation(request):
         sender = Profile.objects.get(pk=pk)
         rel = get_object_or_404(Relationship, sender=sender, receiver=receiver)
         rel.delete()
-    return redirect('my-invites-view')
+    return redirect('all-profiles-view')
 
 
 class UserList(LoginRequiredMixin,ListView):
@@ -241,9 +241,6 @@ class UserList(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)
-        friends = Profile.objects.get_friends(self.request.user)
-        res = Relationship.objects.invatations_received(profile)
-        inv = list(map(lambda x: x.sender, res))
         rel_r = Relationship.objects.filter(sender=profile)
         rel_s = Relationship.objects.filter(receiver=profile)
         rel_receiver = []
@@ -254,8 +251,6 @@ class UserList(LoginRequiredMixin,ListView):
             rel_sender.append(item.sender.user)
         context["rel_receiver"] = rel_receiver
         context["rel_sender"] = rel_sender
-        context["friends"] = friends
-        context["inv"] = inv
 
         return context
 

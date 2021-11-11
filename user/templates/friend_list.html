@@ -1,8 +1,14 @@
 {% extends "home.html" %} {% load static %}{% block content %}
 <div class="container">
+
+      <div style="display:flex;">
+        <a href="{% url 'my-invites-view' %}" style="margin-left: 170px;">Invites </a>
+        <a href="{% url 'all-profiles-view' %}" style="margin-left: 40px;">All friends</a>
+      </div>
       {% if friends %}
       <div class="card card-signin my-5">
         <div class="card-body" style="width: 500px;">
+
           {% for user_p in friends %}
           <div class="left_rigth" style="display: flex; justify-content:baseline;border: 1px solid lightskyblue;padding: 5px 5px;">
             <div class = "left" style="position:relative;">
@@ -25,9 +31,10 @@
         </div>
       </div>
       {% else %}
-      <h5><i>You have no friends now! Make some new<a href="{% url 'all-profiles-view' %}">friends here!</a></i></h5>
+      <div style="display:flex;justify-content: center; margin-left: 160px; margin-top: 30px;">
+        <p>You have no friends now!</p>
+      </div>
       {% endif %}
 
-  <a href="{% url 'my-invites-view' %}">Заявки в друзья</a>
 </div>
 {% endblock content %}
