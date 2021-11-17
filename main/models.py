@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.urls import reverse
 from autoslug import AutoSlugField
+from user.models import Profile
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -18,6 +19,8 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
+        
+    
   
     class Meta:
         verbose_name = 'Post'
@@ -29,7 +32,18 @@ class Comment(models.Model):
 	comment = models.CharField(max_length=255)
 	comment_date = models.DateTimeField(default=timezone.now)
 
+
+LIKE_CHOICES = (
+    ('Like','Like'),
+    ('Unlike','Unlike'),
+)
+
 class Like(models.Model):
-    user = models.ForeignKey(User, related_name='likes1', on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, related_name='likes', on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name='likes1', on_delete=models.CASCADE)
+    # value = models.CharField(choices = LIKE_CHOICES, max_length = 8)
+
+    def __str__(self):
+        return f"{self.user}-{self.post}-{self.value}"
+
 

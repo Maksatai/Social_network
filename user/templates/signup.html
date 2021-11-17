@@ -3,9 +3,7 @@
         <form method="POST">
           {% csrf_token %}
             {% for field in user_form %}
-            {% if field.errors %}
-              {{ field.errors }}
-            {% endif %}
+
               <div class="form-group">
               <div class="input-group">
               <span class="input-group-addon">
@@ -20,6 +18,9 @@
                 {% endif %}
               </span>
                 {{ field }}
+                {% if field.errors %}
+                <p style="text-align: left;color:red;">{{ field.errors.as_text }}</p>
+                {% endif %}
                 </div>
                 </div>
               {% endfor %}

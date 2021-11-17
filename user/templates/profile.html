@@ -69,7 +69,10 @@
                 <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.get_relationship_display }}</dd>
 
             </div>
-
+            <div class="row row-cols-2">
+                <dd class="col-sm-6 list-group-item list-group-item-primary">Friends</dt>
+                <dd class="col-sm-6 list-group-item-secondary">{{ selected_user.profile.friends.count }}</dd>
+            </div>
         </div><br>
           </div>
             
